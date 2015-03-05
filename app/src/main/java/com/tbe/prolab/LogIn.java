@@ -152,9 +152,10 @@ public class LogIn extends ActionBarActivity {
                 // Starts the query
                 conn.connect();
                 int response = conn.getResponseCode();
-                Log.d("Connection ", "The response is: " + response + " ://: " + url);
-                if (response == 400)
+                Log.d("Connection ", "The response is: " + response);
+                if (response == 204){
                     return "fail";
+                }
 
                 is = conn.getInputStream();
                 // Convert the InputStream into a string
@@ -190,8 +191,6 @@ public class LogIn extends ActionBarActivity {
                 conn.connect();
                 int response = conn.getResponseCode();
                 Log.d("Connection ", "The response is: " + response);
-                if (response == 400)
-                    return "fail";
                 is = conn.getInputStream();
                 // Convert the InputStream into a string
                 return readIt(is, len);
