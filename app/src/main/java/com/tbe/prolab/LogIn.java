@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -57,6 +56,8 @@ public class LogIn extends ActionBarActivity {
             ev.setVisibility(View.GONE);
             TextView ev2 = (TextView) findViewById(R.id.surname);
             ev2.setVisibility(View.GONE);
+            TextView ev3 = (TextView) findViewById(R.id.email);
+            ev3.setVisibility(View.GONE);
             Button b = (Button) view;
             b.setText(getString(R.string.login_register));
             state = 1;
@@ -66,6 +67,8 @@ public class LogIn extends ActionBarActivity {
             ev.setVisibility(View.VISIBLE);
             TextView ev2 = (TextView) findViewById(R.id.surname);
             ev2.setVisibility(View.VISIBLE);
+            TextView ev3 = (TextView) findViewById(R.id.email);
+            ev3.setVisibility(View.VISIBLE);
             Button b = (Button) view;
             b.setText(getString(R.string.already_account));
             state = 2;
@@ -85,9 +88,10 @@ public class LogIn extends ActionBarActivity {
     public void onLogin(View view){
         TextView username = (TextView) findViewById(R.id.user_name);
         TextView password = (TextView) findViewById(R.id.password);
+        TextView email = (TextView) findViewById(R.id.email);
         TextView firstname = (TextView) findViewById(R.id.firstname);
         TextView surname = (TextView) findViewById(R.id.surname);
-        WebAccess wa = new WebAccess(username.getText().toString(), password.getText().toString(), firstname.getText().toString(), surname.getText().toString());
+        WebAccess wa = new WebAccess(username.getText().toString(), password.getText().toString(), email.getText().toString(), firstname.getText().toString(), surname.getText().toString());
         wa.execute();
     }
 
@@ -96,12 +100,15 @@ public class LogIn extends ActionBarActivity {
 
         String username;
         String password;
+        String email;
         String firstname;
         String surname;
 
-        public WebAccess(String username, String password, String firstname, String surname){
+
+        public WebAccess(String username, String password, String email,String firstname, String surname){
             this.username = username;
             this.password = password;
+            this.email = email;
             this.firstname = firstname;
             this.surname = surname;
         }
@@ -110,7 +117,7 @@ public class LogIn extends ActionBarActivity {
         protected String doInBackground(String... urls) {
             try {
                 if (state == 2)
-                    return createAccount(username, password, firstname, surname);
+                    return createAccount(username, password, email, firstname, surname);
                 else if (state == 1)
                     return testAccount(username, password);
                 else {
@@ -161,7 +168,7 @@ public class LogIn extends ActionBarActivity {
             }
         }
 
-        private String createAccount(String username, String password, String firstname, String surname) throws IOException {
+        private String createAccount(String username, String password, String email,String firstname, String surname) throws IOException {
             InputStream is = null;
             // Only display the first 500 characters of the retrieved
             // web page content.
@@ -176,7 +183,7 @@ public class LogIn extends ActionBarActivity {
                 conn.setDoInput(true);
 
                 OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-                writer.write("username="+ username+"&password="+password+"&firstname="+firstname+"&surname="+surname);
+                writer.write("username="+ username+"&password="+password+"&email="+email+"&firstname="+firstname+"&surname="+surname);
                 writer.flush();
 
                 // Starts the query
@@ -187,8 +194,7 @@ public class LogIn extends ActionBarActivity {
                     return "fail";
                 is = conn.getInputStream();
                 // Convert the InputStream into a string
-                String contentAsString = readIt(is, len);
-                return contentAsString;
+                return readIt(is, len);
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
             } finally {
@@ -198,7 +204,7 @@ public class LogIn extends ActionBarActivity {
             }
         }
 
-        public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
+        public String readIt(InputStream stream, int len) throws IOException {
             Reader reader = new InputStreamReader(stream, "UTF-8");
             char[] buffer = new char[len];
             reader.read(buffer);
