@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProLab</string>
+    <string name="valid_login">Connection</string>
+    <string name="prompt_user_name">Pseudo</string>
+    <string name="prompt_password">Mot de Passe</string>
+    <string name="login_register">Enregistrez-vous</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="already_account">Avez-vous déjà un Compte ?</string>
+    <string name="prompt_firstname">Prénom</string>
+    <string name="prompt_surname">Nom</string>
+    <string name="title_activity_register"></string>
+    <string name="title_section5">Paramètres</string>
+    <string name="title_section4">Membres</string>
+    <string name="title_section3">Fonctionnalitées</string>
+    <string name="title_section2">Projet</string>
+    <string name="prompt_email">E-mail</string>
+    <string name="title_activity_create_account"></string>
+    <string name="title_activity_create_project">Création de projet</string>
+    <string name="title_section1" translatable="false">Hub</string>
+    <string name="Create_project_pushline">Phrase choc</string>
+    <string name="create_project_description">Description</string>
+    <string name="create_project_new_name">Nom</string>
+    <string name="create_project_valid">Valider</string>
+</resources>

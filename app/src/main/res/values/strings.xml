@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name" translatable="false">Pro Lab</string>
+
+
+    <string name="title_section1" translatable="false">Hub</string>
+    <string name="title_section2">Project</string>
+    <string name="title_section3">Functionalities</string>
+    <string name="title_section4">Members</string>
+    <string name="title_section5">Settings</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="prompt_user_name">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="valid_login">LogIn</string>
+    <string name="login_register">Register</string>
+
+    <string name="prompt_firstname">Firstname</string>
+    <string name="prompt_surname">Surname</string>
+    <string name="already_account">Have you an account ?</string>
+    <string name="prompt_email">Email</string>
+
+
+    <string name="title_activity_create_project">Create Project</string>
+    <string name="create_project_new_name">Name</string>
+    <string name="Create_project_pushline">PunshLine</string>
+    <string name="create_project_description">Description</string>
+    <string name="create_project_valid">Accept</string>
+    <string name="create_project_url">URL</string>
+
+</resources>
