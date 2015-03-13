@@ -26,5 +26,8 @@
     <string name="create_project_description">Description</string>
     <string name="create_project_valid">Accept</string>
     <string name="create_project_url">URL</string>
+    <string name="title_activity_select_project">SelectProject</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

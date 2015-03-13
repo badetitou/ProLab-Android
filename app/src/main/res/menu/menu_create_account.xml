@@ -1,3 +1,4 @@
-<menu xmlns:tools="http://schemas.android.com/tools" tools:context="com.tbe.prolab.createProject">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.tbe.prolab.Project.createProject">
 
 </menu>

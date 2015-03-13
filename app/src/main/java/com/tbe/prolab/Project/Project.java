@@ -1,4 +1,4 @@
-package com.tbe.prolab;
+package com.tbe.prolab.Project;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,16 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.tbe.prolab.R;
+
 public class Project extends Fragment implements View.OnClickListener {
+    public Project() {
+        // Required empty public constructor
+    }
+
     public static Project newInstance() {
         Project fragment = new Project();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public Project() {
-        // Required empty public constructor
     }
 
     @Override
@@ -30,14 +32,14 @@ public class Project extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_project, container, false);
+        View v = inflater.inflate(R.layout.fragment_project, container, false);
         ImageButton imageButton = (ImageButton) v.findViewById(R.id.create_project_button);
         imageButton.setOnClickListener(this);
         return v;
     }
 
-    public void createProject(View view){
-        Intent intent = new Intent(this.getActivity(), createProject.class);
+    public void createProject(View view) {
+        Intent intent = new Intent(this.getActivity(), Project.createProject.class);
         startActivity(intent);
     }
 

@@ -1,14 +1,17 @@
-package com.tbe.prolab;
+package com.tbe.prolab.Project;
 
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.tbe.prolab.R;
+import com.tbe.prolab.main;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,19 +43,19 @@ public class createProject extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void valid(View view){
+    public void valid(View view) {
         new WebAccess(((TextView) findViewById(R.id.create_project_name)).getText().toString()
-        , ((TextView) findViewById(R.id.create_project_punchline)).getText().toString()
-        , ((TextView) findViewById(R.id.create_project_description)).getText().toString()
-        , ((TextView) findViewById(R.id.create_project_url)).getText().toString()).execute();
+                , ((TextView) findViewById(R.id.create_project_punchline)).getText().toString()
+                , ((TextView) findViewById(R.id.create_project_description)).getText().toString()
+                , ((TextView) findViewById(R.id.create_project_url)).getText().toString()).execute();
     }
 
-    protected void callFail(){
+    protected void callFail() {
         Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
     }
 
 
-    protected void callMain(){
+    protected void callMain() {
         this.finish();
     }
 
@@ -72,7 +75,7 @@ public class createProject extends ActionBarActivity {
         }
 
         @Override
-        protected String doInBackground(String... urls)  {
+        protected String doInBackground(String... urls) {
             InputStream is = null;
             // Only display the first 500 characters of the retrieved
             // web page content.
@@ -87,7 +90,7 @@ public class createProject extends ActionBarActivity {
                 conn.setDoInput(true);
 
                 OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-                writer.write("name="+ projectName+"&description="+projectDescription+"&url="+projectURL+"&punchline="+projectPunshLine);
+                writer.write("name=" + projectName + "&description=" + projectDescription + "&url=" + projectURL + "&punchline=" + projectPunshLine);
                 writer.flush();
 
                 // Starts the query
@@ -99,7 +102,7 @@ public class createProject extends ActionBarActivity {
                 return readIt(is, len);
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
-            } catch (Exception e){
+            } catch (Exception e) {
                 return "fail";
             } finally {
                 try {

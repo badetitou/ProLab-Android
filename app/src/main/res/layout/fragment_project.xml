@@ -1,20 +1,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.tbe.prolab.Project"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="3"
     android:rowCount="3"
-    android:columnCount="3">
+    tools:context="com.tbe.prolab.Project.Project">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ImageButton
+        android:id="@+id/create_project_button"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/create_project_button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/plus_button"
+        android:layout_alignParentRight="true"
         android:background="@null"
+        android:src="@drawable/plus_button"
         android:translationZ="2dp" />
 
 </RelativeLayout>
