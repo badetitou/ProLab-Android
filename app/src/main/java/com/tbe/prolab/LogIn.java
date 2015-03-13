@@ -20,7 +20,6 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 public class LogIn extends ActionBarActivity {
 
     // 1 == EXIST
