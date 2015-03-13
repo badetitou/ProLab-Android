@@ -22,7 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-public class createProject extends ActionBarActivity {
+public class CreateProject extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

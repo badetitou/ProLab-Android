@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Project.createProject"
+            android:name=".Project.CreateProject"
             android:label="@string/title_activity_create_project" />
         <activity
             android:name=".Project.SelectProject"

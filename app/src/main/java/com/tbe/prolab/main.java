@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tbe.prolab.Project.Project;
+import com.tbe.prolab.Project.InfoProject;
 
 import java.util.Locale;
 
@@ -164,7 +164,7 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 1) {
-                return Project.newInstance();
+                return InfoProject.newInstance();
             } else if (position == 2) {
                 return Fonctionnalities.newInstance();
             }
