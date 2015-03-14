@@ -24,17 +24,20 @@ import java.net.URL;
 
 public class CreateProject extends ActionBarActivity {
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
+        Bundle bundle = getIntent().getExtras();
+        username = bundle.getString("username");
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_account, menu);
         return true;
     }
 
@@ -47,7 +50,8 @@ public class CreateProject extends ActionBarActivity {
         new WebAccess(((TextView) findViewById(R.id.create_project_name)).getText().toString()
                 , ((TextView) findViewById(R.id.create_project_punchline)).getText().toString()
                 , ((TextView) findViewById(R.id.create_project_description)).getText().toString()
-                , ((TextView) findViewById(R.id.create_project_url)).getText().toString()).execute();
+                , ((TextView) findViewById(R.id.create_project_url)).getText().toString()
+                , username).execute();
     }
 
     protected void callFail() {
@@ -62,20 +66,31 @@ public class CreateProject extends ActionBarActivity {
     private class WebAccess extends AsyncTask<String, Void, String> {
 
         String projectName;
-        String projectPunshLine;
+        String projectPunchLine;
         String projectDescription;
         String projectURL;
+        String username;
 
 
-        public WebAccess(String projectName, String projectPunshLine, String projectDescription, String projectURL) {
+        public WebAccess(String projectName, String projectPunchLine, String projectDescription, String projectURL, String username) {
             this.projectDescription = projectDescription;
             this.projectName = projectName;
-            this.projectPunshLine = projectPunshLine;
+            this.projectPunchLine = projectPunchLine;
             this.projectURL = projectURL;
+            this.username = username;
         }
 
         @Override
         protected String doInBackground(String... urls) {
+            try {
+                return createProject();
+            } catch (Exception e) {
+                return "fail";
+            }
+
+        }
+
+        public String createProject() throws IOException {
             InputStream is = null;
             // Only display the first 500 characters of the retrieved
             // web page content.
@@ -90,7 +105,7 @@ public class CreateProject extends ActionBarActivity {
                 conn.setDoInput(true);
 
                 OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-                writer.write("name=" + projectName + "&description=" + projectDescription + "&url=" + projectURL + "&punchline=" + projectPunshLine);
+                writer.write("name=" + projectName + "&description=" + projectDescription + "&url=" + projectURL + "&punchline=" + projectPunchLine + "&username=" + username);
                 writer.flush();
 
                 // Starts the query
@@ -102,14 +117,8 @@ public class CreateProject extends ActionBarActivity {
                 return readIt(is, len);
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
-            } catch (Exception e) {
-                return "fail";
             } finally {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                is.close();
             }
         }
 

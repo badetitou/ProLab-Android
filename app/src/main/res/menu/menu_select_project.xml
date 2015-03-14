@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.tbe.prolab.Project.SelectProject">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/add_project"
+        android:icon="@drawable/core_add_item"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/add_project"
+        app:showAsAction="ifRoom" />
 </menu>

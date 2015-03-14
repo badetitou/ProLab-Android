@@ -2,8 +2,8 @@ package com.tbe.prolab;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tbe.prolab.Project.SelectProject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,9 +51,9 @@ public class LogIn extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void goRegisterActivity(View view){
-        if (state == 2){
-            TextView ev = (TextView)findViewById(R.id.firstname);
+    public void goRegisterActivity(View view) {
+        if (state == 2) {
+            TextView ev = (TextView) findViewById(R.id.firstname);
             ev.setVisibility(View.GONE);
             TextView ev2 = (TextView) findViewById(R.id.surname);
             ev2.setVisibility(View.GONE);
@@ -60,9 +62,8 @@ public class LogIn extends ActionBarActivity {
             Button b = (Button) view;
             b.setText(getString(R.string.login_register));
             state = 1;
-        }
-        else {
-            TextView ev = (TextView)findViewById(R.id.firstname);
+        } else {
+            TextView ev = (TextView) findViewById(R.id.firstname);
             ev.setVisibility(View.VISIBLE);
             TextView ev2 = (TextView) findViewById(R.id.surname);
             ev2.setVisibility(View.VISIBLE);
@@ -74,17 +75,20 @@ public class LogIn extends ActionBarActivity {
         }
     }
 
-    protected void callMain(){
-        Intent intent = new Intent(this, main.class);
+    protected void callSelectProject(String username) {
+        Intent intent = new Intent(this, SelectProject.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        intent.putExtras(bundle);
         startActivity(intent);
         this.finish();
     }
 
-    protected void callFail(){
+    protected void callFail() {
         Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();
     }
 
-    public void onLogin(View view){
+    public void onLogin(View view) {
         TextView username = (TextView) findViewById(R.id.user_name);
         TextView password = (TextView) findViewById(R.id.password);
         TextView email = (TextView) findViewById(R.id.email);
@@ -104,7 +108,7 @@ public class LogIn extends ActionBarActivity {
         String surname;
 
 
-        public WebAccess(String username, String password, String email,String firstname, String surname){
+        public WebAccess(String username, String password, String email, String firstname, String surname) {
             this.username = username;
             this.password = password;
             this.email = email;
@@ -126,13 +130,14 @@ public class LogIn extends ActionBarActivity {
                 return "fail";
             }
         }
+
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            if (result.equals("fail")){
-              callFail();
+            if (result.equals("fail")) {
+                callFail();
             } else {
-              callMain();
+                callSelectProject(username);
             }
         }
 
@@ -143,7 +148,7 @@ public class LogIn extends ActionBarActivity {
             int len = 500;
 
             try {
-                URL url = new URL(main.HOST + "/v1/users/"+username + "&" + password);
+                URL url = new URL(main.HOST + "/v1/users/" + username + "&" + password);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
@@ -152,7 +157,7 @@ public class LogIn extends ActionBarActivity {
                 conn.connect();
                 int response = conn.getResponseCode();
                 Log.d("Connection ", "The response is: " + response);
-                if (response == 204){
+                if (response == 204) {
                     return "fail";
                 }
 
@@ -168,7 +173,7 @@ public class LogIn extends ActionBarActivity {
             }
         }
 
-        private String createAccount(String username, String password, String email,String firstname, String surname) throws IOException {
+        private String createAccount(String username, String password, String email, String firstname, String surname) throws IOException {
             InputStream is = null;
             // Only display the first 500 characters of the retrieved
             // web page content.
@@ -183,7 +188,7 @@ public class LogIn extends ActionBarActivity {
                 conn.setDoInput(true);
 
                 OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-                writer.write("username="+ username+"&password="+password+"&email="+email+"&firstname="+firstname+"&surname="+surname);
+                writer.write("username=" + username + "&password=" + password + "&email=" + email + "&firstname=" + firstname + "&surname=" + surname);
                 writer.flush();
 
                 // Starts the query

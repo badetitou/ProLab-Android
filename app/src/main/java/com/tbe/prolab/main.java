@@ -26,7 +26,7 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
     /**
      * Host for test with badetitou computer
      */
-    public static final String HOST = "http://192.168.43.75:" + PORT;
+    public static final String HOST = "http://192.168.0.18:" + PORT;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

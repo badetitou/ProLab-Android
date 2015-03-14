@@ -22,4 +22,7 @@
     <string name="create_project_description">Description</string>
     <string name="create_project_new_name">Nom</string>
     <string name="create_project_valid">Valider</string>
+    <string name="add_project">Ajoutez un projet</string>
+    <string name="create_project_url">URL</string>
+    <string name="title_activity_select_project">Selection d'un projet</string>
 </resources>
