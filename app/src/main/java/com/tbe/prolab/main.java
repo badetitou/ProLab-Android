@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.tbe.prolab.Project.InfoProject;
 
@@ -47,6 +48,10 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle bundle = this.getIntent().getExtras();
+        Toast.makeText(this, "username=" + bundle.getString("username"), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "idProject=" + bundle.getInt("idProject"), Toast.LENGTH_SHORT).show();
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();

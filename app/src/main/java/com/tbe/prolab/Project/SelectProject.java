@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.tbe.prolab.R;
+import com.tbe.prolab.RecyclerItemClickListener;
 import com.tbe.prolab.main;
 
 import org.json.JSONArray;
@@ -48,6 +50,9 @@ public class SelectProject extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = this.getIntent().getExtras();
+        username = bundle.getString("username");
+
         setContentView(R.layout.activity_select_project);
         listProject = (RecyclerView) findViewById(R.id.select_project_list);
         listProject.setHasFixedSize(true);
@@ -56,12 +61,25 @@ public class SelectProject extends ActionBarActivity {
         listProjectLayoutManager = new LinearLayoutManager(this);
         listProject.setLayoutManager(listProjectLayoutManager);
 
-        listProjectAdapter = new ProjectAdapter(new String[0], new String[0]);
+        listProjectAdapter = new ProjectAdapter(new String[0], new String[0], new int[0]);
         listProject.setAdapter(listProjectAdapter);
 
+        listProject.addOnItemTouchListener(
+                new RecyclerItemClickListener(this.getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
 
-        Bundle bundle = this.getIntent().getExtras();
-        username = bundle.getString("username");
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getApplicationContext(), main.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("username", username);
+                        bundle.putInt("idProject", ((ProjectAdapter) listProjectAdapter).getProjectNumber(position));
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                })
+        );
+
+
         new WebAccessUserProject(username).execute();
     }
 
@@ -115,11 +133,13 @@ public class SelectProject extends ActionBarActivity {
                 JSONArray jsonArray = new JSONArray(result);
                 List<String> titles = new ArrayList<>();
                 List<String> punchlines = new ArrayList<>();
+                List<Integer> projectNumber = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); ++i) {
                     titles.add(jsonArray.getJSONObject(i).getString("name"));
                     punchlines.add(jsonArray.getJSONObject(i).getString("punchline"));
+                    projectNumber.add(Integer.parseInt(jsonArray.getJSONObject(i).getString("id")));
                 }
-                ((ProjectAdapter) listProjectAdapter).setData(titles, punchlines);
+                ((ProjectAdapter) listProjectAdapter).setData(titles, punchlines, projectNumber);
 
             } catch (JSONException e) {
             }

@@ -16,21 +16,29 @@ import java.util.List;
  */
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
 
+    private int[] projectNumber;
     private String[] titles;
     private String[] punchlines;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ProjectAdapter(String[] titles, String[] punchlines) {
+    public ProjectAdapter(String[] titles, String[] punchlines, int[] projectNumber) {
         this.titles = titles;
         this.punchlines = punchlines;
+        this.projectNumber = projectNumber;
     }
 
-    public void setData(List<String> titles, List<String> punchlines) {
+    public int getProjectNumber(int position) {
+        return projectNumber[position];
+    }
+
+    public void setData(List<String> titles, List<String> punchlines, List<Integer> projectNumber) {
         this.titles = new String[titles.size()];
         this.punchlines = new String[punchlines.size()];
+        this.projectNumber = new int[projectNumber.size()];
         for (int i = 0; i < titles.size(); ++i) {
             this.titles[i] = titles.get(i);
             this.punchlines[i] = punchlines.get(i);
+            this.projectNumber[i] = projectNumber.get(i);
         }
         this.notifyDataSetChanged();
     }
