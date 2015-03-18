@@ -10,8 +10,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.plus.model.people.Person;
 import com.tbe.prolab.R;
 import com.tbe.prolab.main;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,45 +91,69 @@ public class CreateProject extends ActionBarActivity {
         @Override
         protected String doInBackground(String... urls) {
             try {
-                return createProject();
+                return POST(new Project(0, projectName, projectDescription, projectURL, projectPunchLine));
             } catch (Exception e) {
                 return "fail";
             }
 
         }
 
-        public String createProject() throws IOException {
-            InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
-            int len = 500;
 
+        public String POST(Project project){
+            InputStream inputStream = null;
+            String result = "";
             try {
-                URL url = new URL(main.HOST + "/v1/projects");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
+                    // 1. create HttpClient
+                HttpClient httpclient = new DefaultHttpClient();
 
-                OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-                writer.write("name=" + projectName + "&description=" + projectDescription + "&url=" + projectURL + "&punchline=" + projectPunchLine + "&username=" + username);
-                writer.flush();
+                    // 2. make POST request to the given URL
+                HttpPost httpPost = new HttpPost(main.HOST + "/v1/projects/" + username);
 
-                // Starts the query
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d("Connection ", "The response is: " + response);
-                is = conn.getInputStream();
-                // Convert the InputStream into a string
-                return readIt(is, len);
-                // Makes sure that the InputStream is closed after the app is
-                // finished using it.
-            } finally {
-                is.close();
+                String json = "";
+
+                    // 3. build jsonObject
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.accumulate("name", project.getName());
+                jsonObject.accumulate("description", project.getDescription());
+                jsonObject.accumulate("url", project.getUrl());
+                jsonObject.accumulate("punchline", project.getPunchline());
+
+                    // 4. convert JSONObject to JSON to String
+                json = jsonObject.toString();
+
+                    // ** Alternative way to convert Person object to JSON string usin Jackson Lib
+                    // ObjectMapper mapper = new ObjectMapper();
+                    // json = mapper.writeValueAsString(person);
+
+                    // 5. set json to StringEntity
+                StringEntity se = new StringEntity(json);
+
+                    // 6. set httpPost Entity
+                httpPost.setEntity(se);
+
+                    // 7. Set some headers to inform server about the type of the content
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
+
+                    // 8. Execute POST request to the given URL
+                HttpResponse httpResponse = httpclient.execute(httpPost);
+
+                    // 9. receive response as inputStream
+                inputStream = httpResponse.getEntity().getContent();
+
+                    // 10. convert inputstream to string
+                if(inputStream != null)
+                    result = readIt(inputStream, 500);
+                else
+                    result = "Did not work!";
+
+
+            } catch (Exception e) {
+                Log.d("InputStream", e.getLocalizedMessage());
             }
+                // 11. return result
+            return result;
         }
-
 
         // onPostExecute displays the results of the AsyncTask.
         @Override

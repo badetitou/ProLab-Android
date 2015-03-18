@@ -1,4 +1,4 @@
-package com.tbe.prolab;
+package com.tbe.prolab.Users;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tbe.prolab.Project.SelectProject;
+import com.tbe.prolab.R;
+import com.tbe.prolab.main;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -120,7 +129,7 @@ public class LogIn extends ActionBarActivity {
         protected String doInBackground(String... urls) {
             try {
                 if (state == 2)
-                    return createAccount(username, password, email, firstname, surname);
+                    return createAccount(new User(username, password, email, firstname, surname));
                 else if (state == 1)
                     return testAccount(username, password);
                 else {
@@ -134,10 +143,12 @@ public class LogIn extends ActionBarActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            if (result.equals("fail")) {
+            try {
+                JSONObject user = new JSONObject(result);
+                callSelectProject(user.getString("username"));
+            } catch (Exception e){
                 callFail();
-            } else {
-                callSelectProject(username);
+
             }
         }
 
@@ -173,38 +184,61 @@ public class LogIn extends ActionBarActivity {
             }
         }
 
-        private String createAccount(String username, String password, String email, String firstname, String surname) throws IOException {
-            InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
-            int len = 500;
-
+        private String createAccount(User user) throws IOException {
+            InputStream inputStream = null;
+            String result = "";
             try {
-                URL url = new URL(main.HOST + "/v1/users");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
+                // 1. create HttpClient
+                HttpClient httpclient = new DefaultHttpClient();
 
-                OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
-                writer.write("username=" + username + "&password=" + password + "&email=" + email + "&firstname=" + firstname + "&surname=" + surname);
-                writer.flush();
+                // 2. make POST request to the given URL
+                HttpPost httpPost = new HttpPost(main.HOST + "/v1/users");
 
-                // Starts the query
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d("Connection ", "The response is: " + response);
-                is = conn.getInputStream();
-                // Convert the InputStream into a string
-                return readIt(is, len);
-                // Makes sure that the InputStream is closed after the app is
-                // finished using it.
-            } finally {
-                if (is != null) {
-                    is.close();
-                }
+                String json = "";
+
+                // 3. build jsonObject
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.accumulate("username", user.getUsername());
+                jsonObject.accumulate("password", user.getPassword());
+                jsonObject.accumulate("firstname", user.getFirstname());
+                jsonObject.accumulate("surname", user.getSurname());
+                jsonObject.accumulate("email", user.getEmail());
+
+                // 4. convert JSONObject to JSON to String
+                json = jsonObject.toString();
+
+                // ** Alternative way to convert Person object to JSON string usin Jackson Lib
+                // ObjectMapper mapper = new ObjectMapper();
+                // json = mapper.writeValueAsString(person);
+
+                // 5. set json to StringEntity
+                StringEntity se = new StringEntity(json);
+
+                // 6. set httpPost Entity
+                httpPost.setEntity(se);
+
+                // 7. Set some headers to inform server about the type of the content
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
+
+                // 8. Execute POST request to the given URL
+                HttpResponse httpResponse = httpclient.execute(httpPost);
+
+                // 9. receive response as inputStream
+                inputStream = httpResponse.getEntity().getContent();
+
+                // 10. convert inputstream to string
+                if(inputStream != null)
+                    result = readIt(inputStream, 5000);
+                else
+                    result = "fail";
+
+
+            } catch (Exception e) {
+                Log.d("InputStream", e.getLocalizedMessage());
             }
+            // 11. return result
+            return result;
         }
 
         public String readIt(InputStream stream, int len) throws IOException {

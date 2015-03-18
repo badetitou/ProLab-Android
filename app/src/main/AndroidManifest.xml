@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tbe.prolab">
+    package="com.tbe.prolab" >
 
     <!-- To access our server -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,13 +10,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".main"
             android:label="@string/app_name" />
         <activity
-            android:name=".LogIn"
-            android:label="@string/app_name">
+            android:name=".Users.LogIn"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +28,11 @@
             android:label="@string/title_activity_create_project" />
         <activity
             android:name=".Project.SelectProject"
-            android:label="@string/title_activity_select_project"></activity>
+            android:label="@string/title_activity_select_project" />
+        <activity
+            android:name=".Fonctionnalities.CreateFonctionnality"
+            android:label="@string/title_activity_create_fonctionnality" >
+        </activity>
     </application>
 
 </manifest>

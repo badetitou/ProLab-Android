@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.tbe.prolab.Fonctionnalities.Fonctionnalities;
 import com.tbe.prolab.Project.InfoProject;
 
 import java.util.Locale;
@@ -23,11 +24,11 @@ import java.util.Locale;
 public class main extends ActionBarActivity implements ActionBar.TabListener {
 
 
-    public static final String PORT = "9876";
+    private static final String PORT = "8080";
     /**
      * Host for test with badetitou computer
      */
-    public static final String HOST = "http://192.168.0.18:" + PORT;
+    public static final String HOST = "http://192.168.43.75:" + PORT;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
