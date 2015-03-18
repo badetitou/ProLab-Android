@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.R;
 import com.tbe.prolab.RecyclerItemClickListener;
 import com.tbe.prolab.main;

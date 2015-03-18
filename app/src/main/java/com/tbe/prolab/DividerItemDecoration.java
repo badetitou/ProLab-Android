@@ -1,4 +1,4 @@
-package com.tbe.prolab.Project;
+package com.tbe.prolab;
 
 import android.content.Context;
 import android.content.res.TypedArray;
