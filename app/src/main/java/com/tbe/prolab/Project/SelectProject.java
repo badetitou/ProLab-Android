@@ -73,7 +73,7 @@ public class SelectProject extends ActionBarActivity {
                         Intent intent = new Intent(getApplicationContext(), main.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("username", username);
-                        bundle.putInt("idProject", ((ProjectAdapter) listProjectAdapter).getProjectNumber(position));
+                        bundle.putString("idProject", ((ProjectAdapter) listProjectAdapter).getProjectNumber(position) + "");
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

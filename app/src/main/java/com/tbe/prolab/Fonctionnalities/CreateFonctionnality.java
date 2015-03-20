@@ -7,18 +7,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.tbe.prolab.R;
 import com.tbe.prolab.main;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
+import java.sql.Date;
 
 public class CreateFonctionnality extends ActionBarActivity {
 
@@ -45,67 +53,106 @@ public class CreateFonctionnality extends ActionBarActivity {
     }
 
     public void onCreateFonctionnality(View view){
+        Toast.makeText(this, "Create Fonctionnality", Toast.LENGTH_SHORT).show();
         EditText name = (EditText) findViewById(R.id.create_fonctionnality_name);
         EditText description = (EditText) findViewById(R.id.create_fonctionality_description);
-        new WebAccess(name.getText().toString(), description.getText().toString()).execute();
+        DatePicker datePicker = (DatePicker) findViewById(R.id.create_fonctionality_date_picker);
+        java.util.Date dateUtil = new Date(datePicker.getYear() - 1900, datePicker.getMonth(), datePicker.getDayOfMonth());
+        Date dateSql = new Date(dateUtil.getTime());
+        new WebAccess(new Fonctionnality(name.getText().toString(), description.getText().toString(), dateSql)).execute();
+    }
+
+    private void callFail(){
+        Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();
+    }
+
+    private void callFinish(){
+        this.finish();
     }
 
     private class WebAccess extends AsyncTask<String, Void, String> {
 
-        String name;
-        String description;
+        Fonctionnality fonctionnality;
 
 
-        public WebAccess(String name, String description) {
-            this.name = name;
-            this.description = description;
+        public WebAccess(Fonctionnality fonctionnality) {
+            this.fonctionnality = fonctionnality;
         }
 
         @Override
         protected String doInBackground(String... urls) {
             try {
-                return createProject();
+                return createFonctionnality();
             } catch (Exception e) {
                 return "fail";
             }
 
         }
 
-        public String createProject() throws IOException {
-            InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
-            int len = 500;
-
+        public String createFonctionnality() throws IOException {
+            InputStream inputStream = null;
+            String result = "";
             try {
-                URL url = new URL(main.HOST + "/v1/projects");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
+                // 1. create HttpClient
+                HttpClient httpclient = new DefaultHttpClient();
+
+                // 2. make POST request to the given URL
+                HttpPost httpPost = new HttpPost(main.HOST + "/v1/fonctionnalities/");
+
+                String json = "";
+
+                // 3. build jsonObject
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.accumulate("name", fonctionnality.getName());
+                jsonObject.accumulate("description", fonctionnality.getDescription());
+                jsonObject.accumulate("deadLine", fonctionnality.getDeadLine());
+
+                // 4. convert JSONObject to JSON to String
+                json = jsonObject.toString();
+
+                // ** Alternative way to convert Person object to JSON string usin Jackson Lib
+                // ObjectMapper mapper = new ObjectMapper();
+                // json = mapper.writeValueAsString(person);
+
+                // 5. set json to StringEntity
+                StringEntity se = new StringEntity(json);
+
+                // 6. set httpPost Entity
+                httpPost.setEntity(se);
+
+                // 7. Set some headers to inform server about the type of the content
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Content-type", "application/json");
+
+                // 8. Execute POST request to the given URL
+                HttpResponse httpResponse = httpclient.execute(httpPost);
+
+                // 9. receive response as inputStream
+                inputStream = httpResponse.getEntity().getContent();
+
+                // 10. convert inputstream to string
+                if(inputStream != null)
+                    result = readIt(inputStream, 500);
+                else
+                    result = "Did not work!";
 
 
-
-                // Starts the query
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d("Connection ", "The response is: " + response);
-                is = conn.getInputStream();
-                // Convert the InputStream into a string
-                return readIt(is, len);
-                // Makes sure that the InputStream is closed after the app is
-                // finished using it.
-            } finally {
-                is.close();
+            } catch (Exception e) {
+                Log.d("InputStream", e.getLocalizedMessage());
             }
+            // 11. return result
+            return result;
         }
 
 
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-
+            if (result != null){
+                callFinish();
+            } else {
+                callFail();
+            }
         }
 
         public String readIt(InputStream stream, int len) throws IOException {

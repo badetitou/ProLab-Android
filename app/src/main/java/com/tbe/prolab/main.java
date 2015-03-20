@@ -30,6 +30,10 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
      */
     public static final String HOST = "http://192.168.43.75:" + PORT;
 
+    public static String username = "";
+    public static String idProject = "";
+
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -51,8 +55,8 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
         setContentView(R.layout.activity_main);
 
         Bundle bundle = this.getIntent().getExtras();
-        Toast.makeText(this, "username=" + bundle.getString("username"), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "idProject=" + bundle.getInt("idProject"), Toast.LENGTH_SHORT).show();
+        username = bundle.getString("username");
+        idProject = bundle.getString("idProject");
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();

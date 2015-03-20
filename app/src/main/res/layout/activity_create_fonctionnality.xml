@@ -1,18 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.tbe.prolab.Fonctionnalities.CreateFonctionnality"
-    android:orientation="vertical">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/create_fonctionnality_name"
         android:hint="@string/prompt_create_fonctionnalities_name" />
-
 
 
     <EditText
@@ -24,14 +23,18 @@
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/datePicker"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center"
+
+        android:id="@+id/create_fonctionality_date_picker"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/create_fonctionnalitiy_button"
         android:id="@+id/create_fonctionnality_button"
         android:onClick="onCreateFonctionnality"/>
+        </LinearLayout>
+</ScrollView>
 
-</LinearLayout>
+
