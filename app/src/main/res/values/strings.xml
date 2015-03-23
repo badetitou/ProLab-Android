@@ -36,5 +36,6 @@
     <string name="prompte_create_fonctionnality_description">Description</string>
     <string name="create_fonctionnalitiy_button">Create</string>
     <string name="title_activity_info_fonctionnalities">InfoFonctionnalities</string>
+    <string name="info_fonctionnalities_text_list_members">List members</string>
 
 </resources>
