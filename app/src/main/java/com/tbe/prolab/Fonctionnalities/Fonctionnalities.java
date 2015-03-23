@@ -53,7 +53,6 @@ public class Fonctionnalities extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -80,10 +79,12 @@ public class Fonctionnalities extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), InfoFonctionnalities.class);
+                        Intent intent = new Intent(getActivity().getApplicationContext(), InfoFonctionnalities.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("username", main.username);
                         bundle.putString("idProject", main.idProject);
+                        bundle.putString("name" ,((FonctionnalityAdapter)listFonctionnalityAdapter).getFonctionnalityName(position));
+                        bundle.putString("description" ,((FonctionnalityAdapter)listFonctionnalityAdapter).getFonctionnalityDescription(position));
                         bundle.putInt("idFonctionnality" ,((FonctionnalityAdapter)listFonctionnalityAdapter).getFonctionnalityNumber(position));
                         intent.putExtras(bundle);
                         startActivity(intent);
