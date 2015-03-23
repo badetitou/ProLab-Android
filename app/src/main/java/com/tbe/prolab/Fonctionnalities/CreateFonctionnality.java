@@ -59,7 +59,7 @@ public class CreateFonctionnality extends ActionBarActivity {
         DatePicker datePicker = (DatePicker) findViewById(R.id.create_fonctionality_date_picker);
         java.util.Date dateUtil = new Date(datePicker.getYear() - 1900, datePicker.getMonth(), datePicker.getDayOfMonth());
         Date dateSql = new Date(dateUtil.getTime());
-        new WebAccess(new Fonctionnality(name.getText().toString(), description.getText().toString(), dateSql)).execute();
+        new WebAccess(new Fonctionnality(name.getText().toString(), description.getText().toString(), dateSql), main.idProject, main.username).execute();
     }
 
     private void callFail(){
@@ -73,10 +73,13 @@ public class CreateFonctionnality extends ActionBarActivity {
     private class WebAccess extends AsyncTask<String, Void, String> {
 
         Fonctionnality fonctionnality;
+        String idProject;
+        String username;
 
-
-        public WebAccess(Fonctionnality fonctionnality) {
+        public WebAccess(Fonctionnality fonctionnality, String idProject, String username) {
             this.fonctionnality = fonctionnality;
+            this.idProject = idProject;
+            this.username = username;
         }
 
         @Override
@@ -97,7 +100,7 @@ public class CreateFonctionnality extends ActionBarActivity {
                 HttpClient httpclient = new DefaultHttpClient();
 
                 // 2. make POST request to the given URL
-                HttpPost httpPost = new HttpPost(main.HOST + "/v1/fonctionnalities/");
+                HttpPost httpPost = new HttpPost(main.HOST + "/v1/fonctionnalities/" +username + "/" + idProject);
 
                 String json = "";
 

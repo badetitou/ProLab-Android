@@ -33,6 +33,10 @@
             android:name=".Fonctionnalities.CreateFonctionnality"
             android:label="@string/title_activity_create_fonctionnality" >
         </activity>
+        <activity
+            android:name=".Fonctionnalities.InfoFonctionnalities"
+            android:label="@string/title_activity_info_fonctionnalities" >
+        </activity>
     </application>
 
 </manifest>

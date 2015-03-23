@@ -35,5 +35,6 @@
     <string name="prompt_create_fonctionnalities_name">Name</string>
     <string name="prompte_create_fonctionnality_description">Description</string>
     <string name="create_fonctionnalitiy_button">Create</string>
+    <string name="title_activity_info_fonctionnalities">InfoFonctionnalities</string>
 
 </resources>

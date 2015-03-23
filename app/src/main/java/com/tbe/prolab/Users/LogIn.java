@@ -64,7 +64,7 @@ public class LogIn extends ActionBarActivity {
         if (state == 2) {
             TextView ev = (TextView) findViewById(R.id.firstname);
             ev.setVisibility(View.GONE);
-            TextView ev2 = (TextView) findViewById(R.id.surname);
+            TextView ev2 = (TextView) findViewById(R.id.lastname);
             ev2.setVisibility(View.GONE);
             TextView ev3 = (TextView) findViewById(R.id.email);
             ev3.setVisibility(View.GONE);
@@ -74,7 +74,7 @@ public class LogIn extends ActionBarActivity {
         } else {
             TextView ev = (TextView) findViewById(R.id.firstname);
             ev.setVisibility(View.VISIBLE);
-            TextView ev2 = (TextView) findViewById(R.id.surname);
+            TextView ev2 = (TextView) findViewById(R.id.lastname);
             ev2.setVisibility(View.VISIBLE);
             TextView ev3 = (TextView) findViewById(R.id.email);
             ev3.setVisibility(View.VISIBLE);
@@ -102,8 +102,8 @@ public class LogIn extends ActionBarActivity {
         TextView password = (TextView) findViewById(R.id.password);
         TextView email = (TextView) findViewById(R.id.email);
         TextView firstname = (TextView) findViewById(R.id.firstname);
-        TextView surname = (TextView) findViewById(R.id.surname);
-        WebAccess wa = new WebAccess(username.getText().toString(), password.getText().toString(), email.getText().toString(), firstname.getText().toString(), surname.getText().toString());
+        TextView lastname = (TextView) findViewById(R.id.lastname);
+        WebAccess wa = new WebAccess(username.getText().toString(), password.getText().toString(), email.getText().toString(), firstname.getText().toString(), lastname.getText().toString());
         wa.execute();
     }
 
@@ -114,22 +114,22 @@ public class LogIn extends ActionBarActivity {
         String password;
         String email;
         String firstname;
-        String surname;
+        String lastname;
 
 
-        public WebAccess(String username, String password, String email, String firstname, String surname) {
+        public WebAccess(String username, String password, String email, String firstname, String lastname) {
             this.username = username;
             this.password = password;
             this.email = email;
             this.firstname = firstname;
-            this.surname = surname;
+            this.lastname = lastname;
         }
 
         @Override
         protected String doInBackground(String... urls) {
             try {
                 if (state == 2)
-                    return createAccount(new User(username, password, email, firstname, surname));
+                    return createAccount(new User(username, password, email, firstname, lastname));
                 else if (state == 1)
                     return testAccount(username, password);
                 else {
@@ -201,7 +201,7 @@ public class LogIn extends ActionBarActivity {
                 jsonObject.accumulate("username", user.getUsername());
                 jsonObject.accumulate("password", user.getPassword());
                 jsonObject.accumulate("firstname", user.getFirstname());
-                jsonObject.accumulate("surname", user.getSurname());
+                jsonObject.accumulate("lastname", user.getLastname());
                 jsonObject.accumulate("email", user.getEmail());
 
                 // 4. convert JSONObject to JSON to String

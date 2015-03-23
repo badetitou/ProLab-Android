@@ -93,17 +93,17 @@ public class SelectProject extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void onCreateProject(View view){
+        Intent intent = new Intent(this, CreateProject.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_project:
-                Intent intent = new Intent(this, CreateProject.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("username", username);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

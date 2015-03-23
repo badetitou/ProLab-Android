@@ -52,7 +52,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/surname"
+        android:id="@+id/lastname"
         android:visibility="gone"
         android:hint="@string/prompt_surname"
         android:singleLine="true"
