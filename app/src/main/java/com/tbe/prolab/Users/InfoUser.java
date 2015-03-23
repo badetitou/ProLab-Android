@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tbe.prolab.Project.ProjectAdapter;
 import com.tbe.prolab.R;
@@ -80,7 +81,7 @@ public class InfoUser extends ActionBarActivity {
             try {
                 return getUser();
             } catch (Exception e) {
-                return "fail";
+                return e.getMessage();
             }
         }
 
@@ -104,7 +105,7 @@ public class InfoUser extends ActionBarActivity {
             int len = 500;
 
             try {
-                URL url = new URL(main.HOST + "/v1/users/" + username);
+                URL url = new URL(main.HOST + "/v1/users/" + userName);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);

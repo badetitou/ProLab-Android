@@ -24,11 +24,11 @@ import java.util.Locale;
 
 public class main extends ActionBarActivity implements ActionBar.TabListener {
 
-    private static final String PORT = "80";
+    private static final String PORT = "8080";
     /**
      * Host for test with badetitou computer
      */
-    public static final String HOST = "http://iut.azae.net/Prolab/" ;
+    public static final String HOST = "http://iut.azae.net/Prolab";
 
     public static String username = "";
     public static String idProject = "";
