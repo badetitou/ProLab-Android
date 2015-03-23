@@ -37,6 +37,10 @@
             android:name=".Fonctionnalities.InfoFonctionnalities"
             android:label="@string/title_activity_info_fonctionnalities" >
         </activity>
+        <activity
+            android:name=".Users.InfoUser"
+            android:label="@string/title_activity_info_user" >
+        </activity>
     </application>
 
 </manifest>

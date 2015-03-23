@@ -2,8 +2,10 @@
   <dictionary name="badetitou">
     <words>
       <w>appaer</w>
+      <w>firstname</w>
       <w>fonctionnalities</w>
       <w>fonctionnality</w>
+      <w>lastname</w>
     </words>
   </dictionary>
 </component>

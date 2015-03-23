@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.tbe.prolab.Fonctionnalities.Fonctionnalities;
+import com.tbe.prolab.Members.SelectMember;
 import com.tbe.prolab.Project.InfoProject;
 
 import java.util.Locale;
@@ -23,12 +24,11 @@ import java.util.Locale;
 
 public class main extends ActionBarActivity implements ActionBar.TabListener {
 
-
-    private static final String PORT = "8080";
+    private static final String PORT = "80";
     /**
      * Host for test with badetitou computer
      */
-    public static final String HOST = "http://192.168.43.75:" + PORT;
+    public static final String HOST = "http://iut.azae.net/Prolab/" ;
 
     public static String username = "";
     public static String idProject = "";
@@ -177,6 +177,8 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
                 return InfoProject.newInstance();
             } else if (position == 2) {
                 return Fonctionnalities.newInstance();
+            } else if (position == 3){
+                return SelectMember.newInstance();
             }
             return PlaceholderFragment.newInstance(position + 1);
         }

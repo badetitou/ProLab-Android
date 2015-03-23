@@ -110,7 +110,7 @@ public class SelectProject extends ActionBarActivity {
     }
 
 
-    public class WebAccessUserProject extends AsyncTask<String, Void, String> {
+    private class WebAccessUserProject extends AsyncTask<String, Void, String> {
 
         private String username;
 
