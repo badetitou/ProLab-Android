@@ -62,7 +62,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
         listMembersLayoutManager = new LinearLayoutManager(this);
         listmembers.setLayoutManager(listMembersLayoutManager);
 
-        listMembersAdapter = new MemberAdapter(new String[0]);
+        listMembersAdapter = new MemberAdapter(new String[0], new int[0]);
         listmembers.setAdapter(listMembersAdapter);
 
         Bundle bundle = this.getIntent().getExtras();
@@ -106,9 +106,9 @@ public class InfoFonctionnalities extends ActionBarActivity {
              try {
                  JSONObject jsonObject = new JSONObject(result);
                  name.setText(jsonObject.getString("name"));
-                 description.setText(jsonObject.getString("z"));
-                 name.setText(jsonObject.getString("name"));
-                 name.setText(jsonObject.getString("name"));
+                 description.setText(jsonObject.getString("description"));
+                 progressBar.setProgress(jsonObject.getInt("avancement"));
+                 date.setText(jsonObject.getString("deadLine"));
              } catch (JSONException e) {
                  e.printStackTrace();
              }

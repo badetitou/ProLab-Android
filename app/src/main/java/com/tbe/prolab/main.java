@@ -1,5 +1,6 @@
 package com.tbe.prolab;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,20 +20,27 @@ import android.widget.Toast;
 import com.tbe.prolab.Fonctionnalities.Fonctionnalities;
 import com.tbe.prolab.Members.SelectMember;
 import com.tbe.prolab.Project.InfoProject;
+import com.tbe.prolab.Tools.ReadIt;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 
 
 public class main extends ActionBarActivity implements ActionBar.TabListener {
-
-    private static final String PORT = "8080";
     /**
      * Host for test with badetitou computer
      */
-    public static final String HOST = "http://iut.azae.net/Prolab";
+    public static final String HOST = "http://10.0.2.2:8080";
 
     public static String username = "";
     public static String idProject = "";
+    public static String idMember = "";
 
 
     /**
@@ -91,6 +100,7 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        new WebAccessIdMember().execute();
     }
 
 
@@ -124,6 +134,52 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    public class WebAccessIdMember extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                return getProject();
+            } catch (Exception e) {
+                return "fail";
+            }
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            idMember = result;
+        }
+
+        public String getProject() throws IOException {
+            InputStream is = null;
+            try {
+                URL url = new URL(main.HOST + "/v1/members/" + username + "&"+idProject);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setDoInput(true);
+                // Starts the query
+                conn.connect();
+                int response = conn.getResponseCode();
+                Log.d("Connection ", "The response is: " + response);
+                if (response == 204) {
+                    return "fail";
+                }
+
+                is = conn.getInputStream();
+                // Convert the InputStream into a string
+                return ReadIt.ReadIt(is);
+                // Makes sure that the InputStream is closed after the app is
+                // finished using it.
+            } finally {
+                if (is != null) {
+                    is.close();
+                }
+            }
+        }
     }
 
     /**

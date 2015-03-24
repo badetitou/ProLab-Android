@@ -25,7 +25,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     // Provide a suitable constructor (depends on the kind of dataset)
     public MemberAdapter(String[] usernames, int[] idMembers) {
         this.usernames = usernames;
-        this.idMembers=idMembers;
+        this.idMembers = idMembers;
     }
 
 
@@ -55,6 +55,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.username.setText(usernames[i]);
+        viewHolder.idMember = idMembers[i];
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -69,6 +70,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView username;
+        public int idMember;
 
         public ViewHolder(LinearLayout ll) {
             super(ll);

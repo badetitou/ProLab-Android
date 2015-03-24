@@ -55,14 +55,14 @@ public class SelectMember extends Fragment implements View.OnClickListener {
         ImageButton imageButton = (ImageButton) v.findViewById(R.id.select_member_add_button);
         imageButton.setOnClickListener(this);
 
-        RecyclerView listMember = (RecyclerView) v.findViewById(R.id.select_member_list);
+        listMember = (RecyclerView) v.findViewById(R.id.select_member_list);
         listMember.setHasFixedSize(true);
         listMember.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         listMemberLayoutManager = new LinearLayoutManager(getActivity());
         listMember.setLayoutManager(listMemberLayoutManager);
 
-        listMemberAdapter = new MemberAdapter(new String[0]);
+        listMemberAdapter = new MemberAdapter(new String[0], new int[0]);
         listMember.setAdapter(listMemberAdapter);
 
         new WebAccessProjectUser(main.idProject).execute();
@@ -70,12 +70,11 @@ public class SelectMember extends Fragment implements View.OnClickListener {
         return v;
     }
 
-    protected void callFail(){
-        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+    protected void callFail(String text){
+        Toast.makeText(getActivity(), "Fail : " + text, Toast.LENGTH_SHORT).show();
     }
 
     private void addMember(){
-
         new AddUser().show(this.getFragmentManager(), "addUser");
     }
 
@@ -101,7 +100,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
             try {
                 return getAllProjectMember(idProject);
             } catch (IOException e) {
-                return "fail";
+                return "Fail";
             }
         }
 
@@ -111,12 +110,14 @@ public class SelectMember extends Fragment implements View.OnClickListener {
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 ArrayList<String> members = new ArrayList<>();
+                ArrayList<Integer> idMember = new ArrayList<>();
                 for (int i = 0;i<jsonArray.length();++i){
                     members.add(jsonArray.getJSONObject(i).getString("username"));
+                    idMember.add(jsonArray.getJSONObject(i).getInt("idMember"));
                 }
-                ((MemberAdapter) listMemberAdapter).setData(members);
+                ((MemberAdapter) listMemberAdapter).setData(members, idMember);
             } catch (Exception e){
-                callFail();
+                callFail(result);
             }
         }
 
@@ -127,7 +128,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
             int len = 500;
 
             try {
-                URL url = new URL(main.HOST + "/v1/members/project/" + idProject);
+                URL url = new URL(main.HOST + "/v1/members/member/" + idProject);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
