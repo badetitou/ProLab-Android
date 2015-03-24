@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tbe.prolab.R;
+import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
 
 import org.apache.http.HttpResponse;
@@ -132,7 +133,7 @@ public class CreateFonctionnality extends ActionBarActivity {
 
                 // 10. convert inputstream to string
                 if(inputStream != null)
-                    result = readIt(inputStream, 500);
+                    result = ReadIt.ReadIt(inputStream);
                 else
                     result = "Did not work!";
 

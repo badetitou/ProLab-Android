@@ -46,5 +46,8 @@
     <string name="pop_up_cancel">Cancel</string>
     <string name="popup_add_username">Username</string>
     <string name="popup_remove_user">Remove User :</string>
+    <string name="title_activity_modif_project">ModifProject</string>
+    <string name="update_failed">Update Failed. Check your internet connection.</string>
+    <string name="update_ok">Success</string>
 
 </resources>

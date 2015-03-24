@@ -36,7 +36,7 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
     /**
      * Host for test with badetitou computer
      */
-    public static final String HOST = "http://10.0.2.2:8080";
+    public static final String HOST = "http://iut.azae.net/Prolab";
 
     public static String username = "";
     public static String idProject = "";
@@ -189,7 +189,7 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
     }
 
     private void callOk() {
-        Toast.makeText(this, "<"+idMember+">",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Connected" ,Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.Members.MemberAdapter;
@@ -68,6 +69,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
         Bundle bundle = this.getIntent().getExtras();
 
         new WebAccessInfoFonctionnality(bundle.getInt("idFonctionnality")).execute();
+        new WebAccessFonctionnalityUsers(bundle.getInt("idFonctionnality")).execute();
     }
 
 
@@ -83,6 +85,77 @@ public class InfoFonctionnalities extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private class WebAccessFonctionnalityUsers extends AsyncTask<String, Void, String> {
+
+        int idFonctionnality;
+
+        public WebAccessFonctionnalityUsers(int idFonctionnality) {
+            this.idFonctionnality = idFonctionnality;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                return getFonctionnalityUsers(idFonctionnality);
+            } catch (IOException e) {
+                return "Fail";
+            }
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONArray jsonArray = new JSONArray(result);
+                ArrayList<String> members = new ArrayList<>();
+                ArrayList<Integer> idMember = new ArrayList<>();
+                for (int i = 0;i<jsonArray.length();++i){
+                    members.add(jsonArray.getJSONObject(i).getString("username"));
+                    idMember.add(jsonArray.getJSONObject(i).getInt("idMember"));
+                }
+                ((MemberAdapter) listMembersAdapter).setData(members, idMember);
+            } catch (Exception e){
+                callFail(result);
+            }
+        }
+
+        private String getFonctionnalityUsers(int idFonctionnality) throws IOException {
+            InputStream is = null;
+            // Only display the first 500 characters of the retrieved
+            // web page content.
+            int len = 500;
+
+            try {
+                URL url = new URL(main.HOST + "/v1/fonctionnalities/member/" + idFonctionnality);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setDoInput(true);
+                // Starts the query
+                conn.connect();
+                int response = conn.getResponseCode();
+                Log.d("Connection ", "The response is: " + response);
+                if (response == 204) {
+                    return "fail";
+                }
+
+                is = conn.getInputStream();
+                // Convert the InputStream into a string
+                return ReadIt.ReadIt(is);
+                // Makes sure that the InputStream is closed after the app is
+                // finished using it.
+            } finally {
+                if (is != null) {
+                    is.close();
+                }
+            }
+        }
+    }
+
+    private void callFail(String result) {
+        Toast.makeText(this.getApplicationContext(), "Fail : " + result, Toast.LENGTH_SHORT).show();
+    }
+
     private class WebAccessInfoFonctionnality extends AsyncTask<String, Void, String> {
 
         private int idFonctionnality;
@@ -94,7 +167,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
         @Override
         protected String doInBackground(String... urls) {
             try {
-                return getProject();
+                return getInfoFonctionnality();
             } catch (Exception e) {
                 return "fail";
             }
@@ -114,7 +187,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
              }
         }
 
-        public String getProject() throws IOException {
+        public String getInfoFonctionnality() throws IOException {
             InputStream is = null;
             // Only display the first 500 characters of the retrieved
             // web page content.
