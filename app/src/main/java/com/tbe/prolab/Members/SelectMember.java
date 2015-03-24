@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.PopUp.AddUser;
@@ -30,6 +31,8 @@ public class SelectMember extends Fragment implements View.OnClickListener {
     private RecyclerView.Adapter listMemberAdapter;
     private RecyclerView.LayoutManager listMemberLayoutManager;
 
+    private ProgressBar progressBar;
+
     public SelectMember() {
         // Required empty public constructor
     }
@@ -42,6 +45,12 @@ public class SelectMember extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        new WebAccessProjectUser(main.idProject).execute();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -51,6 +60,9 @@ public class SelectMember extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_select_member, container, false);
+
+        progressBar = (ProgressBar) v.findViewById(R.id.select_member_progressbar);
+        progressBar.setMax(100);
 
         ImageButton imageButton = (ImageButton) v.findViewById(R.id.select_member_add_button);
         imageButton.setOnClickListener(this);
@@ -75,7 +87,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
     }
 
     private void addMember(){
-        new AddUser().show(this.getFragmentManager(), "addUser");
+        new AddUser(0,0).show(this.getFragmentManager(), "addUser");
     }
 
     @Override
@@ -97,6 +109,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
 
         @Override
         protected String doInBackground(String... urls) {
+            progressBar.setIndeterminate(true);
             try {
                 return getAllProjectMember(idProject);
             } catch (IOException e) {
@@ -107,6 +120,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            progressBar.setIndeterminate(false);
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 ArrayList<String> members = new ArrayList<>();
@@ -123,10 +137,6 @@ public class SelectMember extends Fragment implements View.OnClickListener {
 
         private String getAllProjectMember(String idProject) throws IOException {
             InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
-            int len = 500;
-
             try {
                 URL url = new URL(main.HOST + "/v1/members/member/" + idProject);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

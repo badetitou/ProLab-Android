@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.Members.MemberAdapter;
+import com.tbe.prolab.PopUp.AddUser;
 import com.tbe.prolab.Project.ProjectAdapter;
 import com.tbe.prolab.R;
 import com.tbe.prolab.RecyclerItemClickListener;
@@ -44,6 +45,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
     private TextView name;
     private TextView description;
     private TextView date;
+    private int idFonctionnality;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +69,17 @@ public class InfoFonctionnalities extends ActionBarActivity {
         listmembers.setAdapter(listMembersAdapter);
 
         Bundle bundle = this.getIntent().getExtras();
-
+        idFonctionnality = bundle.getInt("idFonctionnality");
         new WebAccessInfoFonctionnality(bundle.getInt("idFonctionnality")).execute();
         new WebAccessFonctionnalityUsers(bundle.getInt("idFonctionnality")).execute();
+    }
+
+    public void addMember(View view){
+        new AddUser(1,idFonctionnality).show(this.getSupportFragmentManager(), "addFonctionnalityMember");
+    }
+
+    public void updateFonctionnality(View view){
+
     }
 
 

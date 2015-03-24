@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.R;
@@ -38,6 +39,7 @@ public class SelectProject extends ActionBarActivity {
     private RecyclerView.LayoutManager listProjectLayoutManager;
 
     private String username;
+    private ProgressBar progressBar;
 
     @Override
     protected void onResume() {
@@ -52,10 +54,14 @@ public class SelectProject extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_project);
+
+        progressBar = (ProgressBar) findViewById(R.id.select_project_progressbar);
+        progressBar.setMax(100);
+
         Bundle bundle = this.getIntent().getExtras();
         username = bundle.getString("username");
 
-        setContentView(R.layout.activity_select_project);
         listProject = (RecyclerView) findViewById(R.id.select_project_list);
         listProject.setHasFixedSize(true);
         listProject.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
@@ -121,6 +127,7 @@ public class SelectProject extends ActionBarActivity {
 
         @Override
         protected String doInBackground(String... urls) {
+            progressBar.setIndeterminate(true);
             try {
                 return getProject();
             } catch (Exception e) {
@@ -131,6 +138,7 @@ public class SelectProject extends ActionBarActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            progressBar.setIndeterminate(false);
             try {
                 JSONArray jsonArray = new JSONArray(result);
                 List<String> titles = new ArrayList<>();

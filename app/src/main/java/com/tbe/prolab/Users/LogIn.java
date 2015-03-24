@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +38,14 @@ public class LogIn extends ActionBarActivity {
     // 1 == EXIST
     // 2 == NO EXIST
     private int state = 1;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        progressBar =(ProgressBar) findViewById(R.id.login_progressbar);
+        progressBar.setMax(100);
     }
 
 
@@ -129,6 +133,7 @@ public class LogIn extends ActionBarActivity {
 
         @Override
         protected String doInBackground(String... urls) {
+            progressBar.setIndeterminate(true);
             try {
                 if (state == 2)
                     return createAccount(new User(username, password, email, firstname, lastname));
@@ -145,6 +150,7 @@ public class LogIn extends ActionBarActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            progressBar.setIndeterminate(false);
             try {
                 JSONObject user = new JSONObject(result);
                 callSelectProject(user.getString("username"));

@@ -49,5 +49,6 @@
     <string name="title_activity_modif_project">ModifProject</string>
     <string name="update_failed">Update Failed. Check your internet connection.</string>
     <string name="update_ok">Success</string>
+    <string name="action_update">Update</string>
 
 </resources>

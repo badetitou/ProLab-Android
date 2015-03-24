@@ -53,6 +53,12 @@ public class Fonctionnalities extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        new WebAccessProjectFonctionnalities(main.idProject).execute();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }

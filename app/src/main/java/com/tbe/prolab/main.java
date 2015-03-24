@@ -36,11 +36,12 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
     /**
      * Host for test with badetitou computer
      */
-    public static final String HOST = "http://iut.azae.net/Prolab";
+    public static final String HOST = "http://10.0.2.2:8080";
 
     public static String username = "";
     public static String idProject = "";
     public static String idMember = "";
+    private static int page = 0;
 
 
     /**
@@ -86,6 +87,7 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
+                page = position;
             }
         });
 
@@ -116,7 +118,6 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
     }

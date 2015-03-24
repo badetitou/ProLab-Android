@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +36,20 @@ public class InfoProject extends Fragment implements View.OnClickListener {
     private int projectNumber;
     private String url;
 
+    private ProgressBar progressBar;
+
 
     public static InfoProject newInstance() {
         InfoProject fragment = new InfoProject();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        new WebAccessInfoProject(main.idProject).execute();
     }
 
     @Override
@@ -53,6 +62,10 @@ public class InfoProject extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_project, container, false);
+
+        progressBar = (ProgressBar) v.findViewById(R.id.info_project_progressbar);
+        progressBar.setMax(100);
+
         name = (TextView) v.findViewById(R.id.info_project_title);
         description = (TextView) v.findViewById(R.id.info_project_description);
         punchline = (TextView) v.findViewById(R.id.info_project_punchline);
@@ -88,6 +101,7 @@ public class InfoProject extends Fragment implements View.OnClickListener {
 
         @Override
         protected String doInBackground(String... urls) {
+            progressBar.setIndeterminate(true);
             try {
                 return getProject();
             } catch (Exception e) {
@@ -98,6 +112,7 @@ public class InfoProject extends Fragment implements View.OnClickListener {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            progressBar.setIndeterminate(false);
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 name.setText(jsonObject.getString("name"));
