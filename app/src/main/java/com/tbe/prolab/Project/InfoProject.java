@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tbe.prolab.R;
+import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
 
 import org.json.JSONException;
@@ -106,7 +107,7 @@ public class InfoProject extends Fragment {
 
                 is = conn.getInputStream();
                 // Convert the InputStream into a string
-                return readIt(is, len);
+                return ReadIt.ReadIt(is);
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
             } finally {
