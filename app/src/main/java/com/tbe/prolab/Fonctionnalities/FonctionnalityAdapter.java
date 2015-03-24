@@ -20,7 +20,7 @@ public class FonctionnalityAdapter extends RecyclerView.Adapter<FonctionnalityAd
     private String[] description;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public FonctionnalityAdapter(String[] titles, String[] description, int[] fonctionalityNumber) {
+    public FonctionnalityAdapter(String[] name, String[] description, int[] fonctionalityNumber) {
         this.name = name;
         this.description = description;
         this.fonctionalityNumber = fonctionalityNumber;
@@ -45,6 +45,7 @@ public class FonctionnalityAdapter extends RecyclerView.Adapter<FonctionnalityAd
             this.description[i] = description.get(i);
             this.fonctionalityNumber[i] = fonctionalityNumber.get(i);
         }
+        this.notifyDataSetChanged();
     }
 
     // Create new views (invoked by the layout manager)

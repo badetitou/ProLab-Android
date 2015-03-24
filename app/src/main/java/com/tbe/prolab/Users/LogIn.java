@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.tbe.prolab.Project.SelectProject;
 import com.tbe.prolab.R;
+import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
 
 import org.apache.http.HttpResponse;
@@ -97,14 +98,14 @@ public class LogIn extends ActionBarActivity {
         Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();
     }
 
+
     public void onLogin(View view) {
         TextView username = (TextView) findViewById(R.id.user_name);
         TextView password = (TextView) findViewById(R.id.password);
         TextView email = (TextView) findViewById(R.id.email);
         TextView firstname = (TextView) findViewById(R.id.firstname);
         TextView lastname = (TextView) findViewById(R.id.lastname);
-        WebAccess wa = new WebAccess(username.getText().toString(), password.getText().toString(), email.getText().toString(), firstname.getText().toString(), lastname.getText().toString());
-        wa.execute();
+        new WebAccess(username.getText().toString(), password.getText().toString(), email.getText().toString(), firstname.getText().toString(), lastname.getText().toString()).execute();
     }
 
 
@@ -148,7 +149,6 @@ public class LogIn extends ActionBarActivity {
                 callSelectProject(user.getString("username"));
             } catch (Exception e){
                 callFail();
-
             }
         }
 
@@ -156,7 +156,6 @@ public class LogIn extends ActionBarActivity {
             InputStream is = null;
             // Only display the first 500 characters of the retrieved
             // web page content.
-            int len = 500;
 
             try {
                 URL url = new URL(main.HOST + "/v1/users/" + username + "&" + password);
@@ -174,7 +173,7 @@ public class LogIn extends ActionBarActivity {
 
                 is = conn.getInputStream();
                 // Convert the InputStream into a string
-                return readIt(is, len);
+                return ReadIt.ReadIt(is);
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
             } finally {
@@ -229,7 +228,7 @@ public class LogIn extends ActionBarActivity {
 
                 // 10. convert inputstream to string
                 if(inputStream != null)
-                    result = readIt(inputStream, 5000);
+                    result = ReadIt.ReadIt(inputStream);
                 else
                     result = "fail";
 

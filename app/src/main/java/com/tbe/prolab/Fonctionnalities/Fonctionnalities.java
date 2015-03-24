@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.Project.ProjectAdapter;
@@ -92,7 +93,6 @@ public class Fonctionnalities extends Fragment implements View.OnClickListener {
                     }
                 })
         );
-
         new WebAccessProjectFonctionnalities(main.idProject).execute();
 
         return v;
@@ -132,28 +132,29 @@ public class Fonctionnalities extends Fragment implements View.OnClickListener {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-                List<String> names = new ArrayList<>();
-                List<String> descriptions = new ArrayList<>();
-                List<Integer> fonctionnalityNumber = new ArrayList<>();
-                for (int i = 0; i < jsonArray.length(); ++i) {
-                    names.add(jsonArray.getJSONObject(i).getString("name"));
-                    descriptions.add(jsonArray.getJSONObject(i).getString("description"));
-                    fonctionnalityNumber.add(Integer.parseInt(jsonArray.getJSONObject(i).getString("id")));
-                }
-                ((FonctionnalityAdapter) listFonctionnalityAdapter).setData(names, descriptions, fonctionnalityNumber);
+            if (result.equals("fail") || result.equals("")){
+                callFail();
+            }else {
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    List<String> names = new ArrayList<>();
+                    List<String> descriptions = new ArrayList<>();
+                    List<Integer> fonctionnalityNumber = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        names.add(jsonArray.getJSONObject(i).getString("name"));
+                        descriptions.add(jsonArray.getJSONObject(i).getString("description"));
+                        fonctionnalityNumber.add(Integer.parseInt(jsonArray.getJSONObject(i).getString("id")));
+                    }
+                    ((FonctionnalityAdapter) listFonctionnalityAdapter).setData(names, descriptions, fonctionnalityNumber);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } catch (JSONException e) {
+                    callFail();
+                }
             }
         }
 
         public String getProject() throws IOException {
             InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
-            int len = 500;
 
             try {
                 URL url = new URL(main.HOST + "/v1/task/"+ project);
@@ -180,6 +181,10 @@ public class Fonctionnalities extends Fragment implements View.OnClickListener {
                 }
             }
         }
+    }
+
+    private void callFail() {
+        Toast.makeText(this.getActivity(), "fail",Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -4,15 +4,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 
 import com.tbe.prolab.R;
 
 public class InfoFonctionnalities extends ActionBarActivity {
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_fonctionnalities);
+
+        progressBar = (ProgressBar) findViewById(R.id.info_fonctionnality_progress_bar);
+        progressBar.setIndeterminate(true);
     }
 
 
