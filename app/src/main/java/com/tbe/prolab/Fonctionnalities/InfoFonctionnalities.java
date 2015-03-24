@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.Members.MemberAdapter;
@@ -54,6 +53,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
         date = (TextView)findViewById(R.id.info_fonctionnalities_text_date);
 
         progressBar = (ProgressBar) findViewById(R.id.info_fonctionnality_progress_bar);
+        progressBar.setIndeterminate(true);
 
         listmembers = (RecyclerView) findViewById(R.id.select_fonctionnalities_list);
         listmembers.setHasFixedSize(true);
@@ -68,7 +68,6 @@ public class InfoFonctionnalities extends ActionBarActivity {
         Bundle bundle = this.getIntent().getExtras();
 
         new WebAccessInfoFonctionnality(bundle.getInt("idFonctionnality")).execute();
-        new WebAccessFonctionnalityUser(bundle.getInt("idFonctionnality")).execute();
     }
 
 
@@ -95,7 +94,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
         @Override
         protected String doInBackground(String... urls) {
             try {
-                return getFonctionnality();
+                return getProject();
             } catch (Exception e) {
                 return "fail";
             }
@@ -107,16 +106,19 @@ public class InfoFonctionnalities extends ActionBarActivity {
              try {
                  JSONObject jsonObject = new JSONObject(result);
                  name.setText(jsonObject.getString("name"));
-                 description.setText(jsonObject.getString("description"));
-                 progressBar.setProgress(jsonObject.getInt("avancement"));
-                 date.setText(jsonObject.getString("deadLine"));
+                 description.setText(jsonObject.getString("z"));
+                 name.setText(jsonObject.getString("name"));
+                 name.setText(jsonObject.getString("name"));
              } catch (JSONException e) {
                  e.printStackTrace();
              }
         }
 
-        public String getFonctionnality() throws IOException {
+        public String getProject() throws IOException {
             InputStream is = null;
+            // Only display the first 500 characters of the retrieved
+            // web page content.
+            int len = 500;
 
             try {
                 URL url = new URL(main.HOST + "/v1/fonctionnalities/" + idFonctionnality);
@@ -143,71 +145,5 @@ public class InfoFonctionnalities extends ActionBarActivity {
                 }
             }
         }
-    }
-
-    private class WebAccessFonctionnalityUser extends AsyncTask<String, Void, String> {
-
-        int idFonctionnality;
-
-        public WebAccessFonctionnalityUser(int idFonctionnality) {
-            this.idFonctionnality = idFonctionnality;
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                return getFonctionnalityUser(idFonctionnality);
-            } catch (IOException e) {
-                return "fail";
-            }
-        }
-
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-                ArrayList<String> members = new ArrayList<>();
-                for (int i = 0;i<jsonArray.length();++i){
-                    members.add(jsonArray.getJSONObject(i).getString("username"));
-                }
-                ((MemberAdapter) listMembersAdapter).setData(members);
-            } catch (Exception e){
-                callFail();
-            }
-        }
-
-        private String getFonctionnalityUser(int idFonctionnality) throws IOException {
-            InputStream is = null;
-
-            try {
-                URL url = new URL(main.HOST + "/v1/task/users/" + idFonctionnality);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setDoInput(true);
-                // Starts the query
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d("Connection ", "The response is: " + response);
-                if (response == 204) {
-                    return "fail";
-                }
-
-                is = conn.getInputStream();
-                // Convert the InputStream into a string
-                return ReadIt.ReadIt(is);
-                // Makes sure that the InputStream is closed after the app is
-                // finished using it.
-            } finally {
-                if (is != null) {
-                    is.close();
-                }
-            }
-        }
-    }
-
-    private void callFail() {
-        Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
     }
 }

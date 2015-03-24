@@ -41,5 +41,10 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_info_user">InfoUser</string>
+    <string name="popup_add_user">Add User</string>
+    <string name="pop_up_accept">Accept</string>
+    <string name="pop_up_cancel">Cancel</string>
+    <string name="popup_add_username">Username</string>
+    <string name="popup_remove_user">Remove User :</string>
 
 </resources>

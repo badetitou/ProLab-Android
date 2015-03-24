@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.plus.model.people.Person;
 import com.tbe.prolab.R;
+import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
 
 import org.apache.http.HttpResponse;
@@ -141,9 +142,8 @@ public class CreateProject extends ActionBarActivity {
                     // 9. receive response as inputStream
                 inputStream = httpResponse.getEntity().getContent();
 
-                    // 10. convert inputstream to string
                 if(inputStream != null)
-                    result = readIt(inputStream, 500);
+                    result = ReadIt.ReadIt(inputStream);
                 else
                     result = "Did not work!";
 
@@ -163,13 +163,6 @@ public class CreateProject extends ActionBarActivity {
             } else {
                 callMain();
             }
-        }
-
-        public String readIt(InputStream stream, int len) throws IOException {
-            Reader reader = new InputStreamReader(stream, "UTF-8");
-            char[] buffer = new char[len];
-            reader.read(buffer);
-            return new String(buffer);
         }
     }
 }

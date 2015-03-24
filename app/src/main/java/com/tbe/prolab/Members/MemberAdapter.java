@@ -20,17 +20,21 @@ import java.util.List;
  */
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder>{
     private String[] usernames;
+    private int[] idMembers;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MemberAdapter(String[] usernames) {
+    public MemberAdapter(String[] usernames, int[] idMembers) {
         this.usernames = usernames;
+        this.idMembers=idMembers;
     }
 
 
-    public void setData(List<String> username) {
+    public void setData(List<String> username, List<Integer> idMembers) {
         this.usernames = new String[username.size()];
+        this.idMembers = new int[idMembers.size()];
         for (int i = 0; i < username.size(); ++i) {
             this.usernames[i] = username.get(i);
+            this.idMembers[i] = idMembers.get(i);
         }
         this.notifyDataSetChanged();
     }
@@ -74,11 +78,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), InfoUser.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("username", main.username);
+                    bundle.putString("username", username.getText().toString());
                     intent.putExtras(bundle);
                     v.getContext().startActivity(intent);
                 }
             });
+
+
         }
     }
 

@@ -1,6 +1,6 @@
 package com.tbe.prolab.Members;
 
-import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,19 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import com.tbe.prolab.DividerItemDecoration;
-import com.tbe.prolab.Project.ProjectAdapter;
+import com.tbe.prolab.PopUp.AddUser;
 import com.tbe.prolab.R;
-import com.tbe.prolab.RecyclerItemClickListener;
 import com.tbe.prolab.Tools.ReadIt;
-import com.tbe.prolab.Users.InfoUser;
 import com.tbe.prolab.main;
 import org.json.JSONArray;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -55,6 +52,9 @@ public class SelectMember extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_select_member, container, false);
 
+        ImageButton imageButton = (ImageButton) v.findViewById(R.id.select_member_add_button);
+        imageButton.setOnClickListener(this);
+
         RecyclerView listMember = (RecyclerView) v.findViewById(R.id.select_member_list);
         listMember.setHasFixedSize(true);
         listMember.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
@@ -74,8 +74,17 @@ public class SelectMember extends Fragment implements View.OnClickListener {
         Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
     }
 
+    private void addMember(){
+
+        new AddUser().show(this.getFragmentManager(), "addUser");
+    }
+
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.select_member_add_button:
+                addMember();
+        }
 
     }
 
