@@ -65,20 +65,6 @@ public class SelectMember extends Fragment implements View.OnClickListener {
         listMemberAdapter = new MemberAdapter(new String[0]);
         listMember.setAdapter(listMemberAdapter);
 
-        listMember.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), InfoUser.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username", main.username);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                })
-        );
-
         new WebAccessProjectUser(main.idProject).execute();
 
         return v;
