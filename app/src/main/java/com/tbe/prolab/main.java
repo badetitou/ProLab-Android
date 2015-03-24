@@ -150,7 +150,13 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            idMember = result;
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                idMember = jsonObject.getString("idMember");
+                callOk();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         public String getProject() throws IOException {
@@ -180,6 +186,10 @@ public class main extends ActionBarActivity implements ActionBar.TabListener {
                 }
             }
         }
+    }
+
+    private void callOk() {
+        Toast.makeText(this, "<"+idMember+">",Toast.LENGTH_SHORT).show();
     }
 
     /**

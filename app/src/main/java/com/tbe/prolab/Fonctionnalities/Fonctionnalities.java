@@ -157,7 +157,7 @@ public class Fonctionnalities extends Fragment implements View.OnClickListener {
             InputStream is = null;
 
             try {
-                URL url = new URL(main.HOST + "/v1/task/"+ project);
+                URL url = new URL(main.HOST + "/v1/task/allfonctionnalities/"+ main.idMember);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
