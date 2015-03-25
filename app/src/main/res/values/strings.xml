@@ -22,20 +22,19 @@
 
     <string name="title_activity_create_project">Create Project</string>
     <string name="create_project_new_name">Name</string>
-    <string name="Create_project_pushline">PunshLine</string>
+    <string name="Create_project_pushline" translatable="false">PunchLine</string>
     <string name="create_project_description">Description</string>
     <string name="create_project_valid">Accept</string>
     <string name="create_project_url">URL</string>
     <string name="title_activity_select_project">Select project</string>
 
     <string name="add_project">Add Project</string>
-    <string name="title_activity_create_fonctionnality">CreateFonctionnality</string>
+    <string name="title_activity_create_fonctionnality">Create Fonctionnality</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="prompt_create_fonctionnalities_name">Name</string>
     <string name="prompte_create_fonctionnality_description">Description</string>
     <string name="create_fonctionnalitiy_button">Create</string>
-    <string name="title_activity_info_fonctionnalities">InfoFonctionnalities</string>
+    <string name="title_activity_info_fonctionnalities">Info Fonctionnality</string>
     <string name="info_fonctionnalities_text_list_members">List members</string>
 
     <string name="title_activity_info_user">InfoUser</string>
@@ -44,12 +43,12 @@
     <string name="pop_up_cancel">Cancel</string>
     <string name="popup_add_username">Username</string>
     <string name="popup_remove_user">Remove User :</string>
-    <string name="title_activity_modif_project">ModifProject</string>
-    <string name="update_failed">Update Failed. Check your internet connection.</string>
+    <string name="title_activity_modif_project">Modification Project</string>
+    <string name="update_failed">Check your internet connection</string>
     <string name="update_ok">Success</string>
     <string name="action_update">Update</string>
     <string name="popup_remove_project">Delete Project</string>
-    <string name="title_activity_edit_fonctionnality">EditFonctionnality</string>
-    <string name="create_fonctionnality_date">DeadLine</string>
+    <string name="title_activity_edit_fonctionnality">Edit Fonctionnality</string>
+    <string name="create_fonctionnality_date" translatable="false">DeadLine</string>
 
 </resources>

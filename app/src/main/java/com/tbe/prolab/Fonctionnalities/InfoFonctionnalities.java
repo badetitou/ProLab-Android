@@ -87,6 +87,10 @@ public class InfoFonctionnalities extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void deleteFonctionnality(View view){
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
