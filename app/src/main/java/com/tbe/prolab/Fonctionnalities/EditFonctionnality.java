@@ -1,4 +1,4 @@
-package com.tbe.prolab.Project;
+package com.tbe.prolab.Fonctionnalities;
 
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -8,15 +8,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.tbe.prolab.Project.InfoProject;
 import com.tbe.prolab.R;
 import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -25,53 +26,55 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ModifProject extends ActionBarActivity {
+public class EditFonctionnality extends ActionBarActivity {
 
-    EditText name;
-    EditText description;
-    EditText punchline;
-    String url;
-    int idProject;
+    private EditText name;
+    private EditText description;
+    private EditText deadline;
+    private SeekBar avancement;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modif_project);
-        Bundle bundle = this.getIntent().getExtras();
-        idProject = bundle.getInt("projectNumber");
-        url = bundle.getString("url");
+        setContentView(R.layout.activity_edit_fonctionnality);
+        name = (EditText) findViewById(R.id.edit_fonctionnality_name);
+        description = (EditText) findViewById(R.id.edit_fonctionnality_description);
+        deadline = (EditText) findViewById(R.id.edit_fonctionnality_date);
+        avancement = (SeekBar) findViewById(R.id.edit_fonctionnality_avancement);
+        avancement.setMax(100);
 
-        name = (EditText) findViewById(R.id.modif_project_name);
-        punchline = (EditText) findViewById(R.id.modif_project_punchline);
-        description = (EditText) findViewById(R.id.modif_project_description);
+        Bundle bundle = getIntent().getExtras();
         name.setText(bundle.getString("name"));
-        punchline.setText(bundle.getString("punchline"));
         description.setText(bundle.getString("description"));
-    }
-
-    public void update(View view){
-        new WebAccessUpdate().execute();
-        this.finish();
+        deadline.setText("date");
+        avancement.setProgress(bundle.getInt("progress"));
+        id = bundle.getInt("id");
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_modif_project, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_fonctionnality, menu);
         return true;
+    }
+
+    public void update(View view) {
+        new WebAccessUpdateFonctionnality().execute();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         return super.onOptionsItemSelected(item);
     }
 
-    private class WebAccessUpdate extends AsyncTask<String, Void, String>{
+    private class WebAccessUpdateFonctionnality extends AsyncTask<String, Void, String> {
 
         @Override
-        protected void onPostExecute(String result){
-            if (!result.equals("1")){
+        protected void onPostExecute(String result) {
+            if (!result.equals("1")) {
                 callFail(result);
             } else {
                 callOk();
@@ -87,17 +90,17 @@ public class ModifProject extends ActionBarActivity {
                 HttpClient httpclient = new DefaultHttpClient();
 
                 // 2. make Put request to the given URL
-                HttpPut httpPut = new HttpPut(main.HOST + "/v1/projects");
+                HttpPut httpPut = new HttpPut(main.HOST + "/v1/fonctionnalities");
 
                 String json = "";
 
                 // 3. build jsonObject
                 JSONObject jsonObject = new JSONObject();
+                jsonObject.accumulate("id", id);
                 jsonObject.accumulate("name", name.getText().toString());
                 jsonObject.accumulate("description", description.getText().toString());
-                jsonObject.accumulate("punchline", punchline.getText().toString());
-                jsonObject.accumulate("id", idProject);
-                jsonObject.accumulate("url", url);
+                jsonObject.accumulate("date", deadline.getText().toString());
+                jsonObject.accumulate("avancement",  avancement.getProgress());
 
 
                 // 4. convert JSONObject to JSON to String
@@ -123,7 +126,7 @@ public class ModifProject extends ActionBarActivity {
                 inputStream = httpResponse.getEntity().getContent();
 
                 // 10. convert inputstream to string
-                if(inputStream != null)
+                if (inputStream != null)
                     result = ReadIt.ReadIt(inputStream);
                 else
                     result = "Did not work!";
@@ -140,18 +143,18 @@ public class ModifProject extends ActionBarActivity {
         protected String doInBackground(String... params) {
             try {
                 return modifFonctionnality();
-            } catch (Exception e){
+            } catch (Exception e) {
                 return "fail";
             }
         }
+
     }
 
     private void callOk() {
-        Toast.makeText(this, getString(R.string.update_ok),Toast.LENGTH_SHORT).show();
-        this.finish();
+        Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
     }
 
     private void callFail(String result) {
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "fail : " + result, Toast.LENGTH_SHORT).show();
     }
 }

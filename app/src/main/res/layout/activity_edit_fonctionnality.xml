@@ -4,14 +4,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.tbe.prolab.Project.ModifProject"
-    android:orientation="vertical"
-    android:weightSum="1">
+    tools:context="com.tbe.prolab.Fonctionnalities.EditFonctionnality">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/modif_project_name"
+        android:id="@+id/edit_fonctionnality_name"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -19,27 +17,39 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/modif_project_punchline"
-        android:layout_below="@+id/modif_project_name"
+        android:id="@+id/edit_fonctionnality_description"
+        android:layout_below="@+id/edit_fonctionnality_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/modif_project_description"
-        android:layout_below="@+id/modif_project_punchline"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/edit_fonctionnality_date"
+        android:layout_below="@+id/edit_fonctionnality_description"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_fonctionnality_avancement"
+        android:layout_below="@+id/edit_fonctionnality_date"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/edit_fonctionnality_accept"
         android:onClick="update"
         android:src="@drawable/ic_float_button_accept"
         android:background="@null"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/edit_fonctionnality_avancement"
+        android:layout_alignEnd="@+id/edit_fonctionnality_avancement" />
 </RelativeLayout>

@@ -87,9 +87,10 @@ public class InfoProject extends Fragment implements View.OnClickListener {
                 bundle.putInt("projectNumber", projectNumber);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                break;
             case R.id.info_project_delete:
                 new RemoveProject(getActivity()).show(this.getFragmentManager(), "removeProject");
-
+                break;
         }
     }
 

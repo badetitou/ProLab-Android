@@ -51,5 +51,6 @@
     <string name="update_ok">Success</string>
     <string name="action_update">Update</string>
     <string name="popup_remove_project">Delete Project</string>
+    <string name="title_activity_edit_fonctionnality">EditFonctionnality</string>
 
 </resources>

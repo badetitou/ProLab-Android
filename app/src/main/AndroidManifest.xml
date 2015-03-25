@@ -45,6 +45,10 @@
             android:name=".Project.ModifProject"
             android:label="@string/title_activity_modif_project" >
         </activity>
+        <activity
+            android:name=".Fonctionnalities.EditFonctionnality"
+            android:label="@string/title_activity_edit_fonctionnality" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.tbe.prolab.Fonctionnalities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -47,12 +48,12 @@ public class InfoFonctionnalities extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_fonctionnalities);
+
         name = (TextView) findViewById(R.id.info_fonctionnality_name);
         description = (TextView) findViewById(R.id.info_fonctionnality_description);
         date = (TextView)findViewById(R.id.info_fonctionnalities_text_date);
 
         progressBar = (ProgressBar) findViewById(R.id.info_fonctionnality_progress_bar);
-        progressBar.setIndeterminate(true);
 
         listmembers = (RecyclerView) findViewById(R.id.select_fonctionnalities_list);
         listmembers.setHasFixedSize(true);
@@ -75,7 +76,15 @@ public class InfoFonctionnalities extends ActionBarActivity {
     }
 
     public void updateFonctionnality(View view){
-
+        Intent intent = new Intent(this, EditFonctionnality.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name.getText().toString());
+        bundle.putString("description", description.getText().toString());
+        bundle.putString("date", date.getText().toString());
+        bundle.putInt("progress", progressBar.getProgress());
+        bundle.putInt("id", idFonctionnality);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 
