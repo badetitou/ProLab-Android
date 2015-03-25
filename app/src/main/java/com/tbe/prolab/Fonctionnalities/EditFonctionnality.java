@@ -1,5 +1,6 @@
 package com.tbe.prolab.Fonctionnalities;
 
+import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,11 +8,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tbe.prolab.Project.InfoProject;
 import com.tbe.prolab.R;
 import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
@@ -25,14 +27,22 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.sql.Date;
+import java.util.Locale;
 
 public class EditFonctionnality extends ActionBarActivity {
 
     private EditText name;
     private EditText description;
-    private EditText deadline;
+    private TextView deadline;
     private SeekBar avancement;
     private int id;
+    private DateFormat dateFormatter;
+    private DatePickerDialog datePickerDialog;
+    private Date dateDeadline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +50,36 @@ public class EditFonctionnality extends ActionBarActivity {
         setContentView(R.layout.activity_edit_fonctionnality);
         name = (EditText) findViewById(R.id.edit_fonctionnality_name);
         description = (EditText) findViewById(R.id.edit_fonctionnality_description);
-        deadline = (EditText) findViewById(R.id.edit_fonctionnality_date);
+        deadline = (TextView) findViewById(R.id.edit_fonctionnality_date);
         avancement = (SeekBar) findViewById(R.id.edit_fonctionnality_avancement);
         avancement.setMax(100);
 
         Bundle bundle = getIntent().getExtras();
         name.setText(bundle.getString("name"));
         description.setText(bundle.getString("description"));
-        deadline.setText("date");
+        deadline.setText(bundle.getString("date"));
         avancement.setProgress(bundle.getInt("progress"));
         id = bundle.getInt("id");
+
+        // DATE PICKER
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        Calendar newCalendar = Calendar.getInstance();
+        datePickerDialog = new DatePickerDialog(EditFonctionnality.this, new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                deadline.setText(dateFormatter.format(newDate.getTime()));
+                dateDeadline = new Date(newDate.getTimeInMillis());
+            }
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        deadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
     }
+
 
 
     @Override
@@ -74,7 +103,7 @@ public class EditFonctionnality extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if (!result.equals("1")) {
+            if (!result.equals("update")) {
                 callFail(result);
             } else {
                 callOk();
@@ -86,52 +115,22 @@ public class EditFonctionnality extends ActionBarActivity {
             InputStream inputStream = null;
             String result = "";
             try {
-                // 1. create HttpClient
                 HttpClient httpclient = new DefaultHttpClient();
-
-                // 2. make Put request to the given URL
                 HttpPut httpPut = new HttpPut(main.HOST + "/v1/fonctionnalities");
-
                 String json = "";
-
-                // 3. build jsonObject
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.accumulate("id", id);
                 jsonObject.accumulate("name", name.getText().toString());
                 jsonObject.accumulate("description", description.getText().toString());
-                jsonObject.accumulate("date", deadline.getText().toString());
+                jsonObject.accumulate("deadLine", dateDeadline.toString());
                 jsonObject.accumulate("avancement",  avancement.getProgress());
 
-
-                // 4. convert JSONObject to JSON to String
                 json = jsonObject.toString();
-
-                // ** Alternative way to convert Person object to JSON string usin Jackson Lib
-                // ObjectMapper mapper = new ObjectMapper();
-                // json = mapper.writeValueAsString(person);
-
-                // 5. set json to StringEntity
                 StringEntity se = new StringEntity(json);
-
-                // 6. set httpPost Entity
                 httpPut.setEntity(se);
-
-                // 7. Set some headers to inform server about the type of the content
                 httpPut.setHeader("Content-type", "application/json");
-
-                // 8. Execute POST request to the given URL
                 HttpResponse httpResponse = httpclient.execute(httpPut);
-
-                // 9. receive response as inputStream
-                inputStream = httpResponse.getEntity().getContent();
-
-                // 10. convert inputstream to string
-                if (inputStream != null)
-                    result = ReadIt.ReadIt(inputStream);
-                else
-                    result = "Did not work!";
-
-
+                return  ReadIt.ReadIt(httpResponse.getEntity().getContent());
             } catch (Exception e) {
                 Log.d("InputStream", e.getLocalizedMessage());
             }

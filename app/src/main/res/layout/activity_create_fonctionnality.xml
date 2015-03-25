@@ -20,11 +20,11 @@
         android:id="@+id/create_fonctionality_description"
         android:hint="@string/prompte_create_fonctionnality_description" />
 
-    <DatePicker
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-
+        android:text="@string/create_fonctionnality_date"
+        android:textColor="@color/colorAccent"
         android:id="@+id/create_fonctionality_date_picker"/>
 
     <Button

@@ -1,5 +1,6 @@
 package com.tbe.prolab.Fonctionnalities;
 
+import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tbe.prolab.R;
@@ -28,13 +30,41 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class CreateFonctionnality extends ActionBarActivity {
+
+    private DateFormat dateFormatter;
+    private DatePickerDialog datePickerDialog;
+    private Date dateDeadline;
+    private TextView deadline;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_fonctionnality);
+        deadline = (TextView) findViewById(R.id.create_fonctionality_date_picker);
+
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        Calendar newCalendar = Calendar.getInstance();
+        datePickerDialog = new DatePickerDialog(CreateFonctionnality.this, new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                deadline.setText(dateFormatter.format(newDate.getTime()));
+                dateDeadline = new Date(newDate.getTimeInMillis());
+            }
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        deadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
     }
 
 
@@ -57,10 +87,7 @@ public class CreateFonctionnality extends ActionBarActivity {
         Toast.makeText(this, "Create Fonctionnality", Toast.LENGTH_SHORT).show();
         EditText name = (EditText) findViewById(R.id.create_fonctionnality_name);
         EditText description = (EditText) findViewById(R.id.create_fonctionality_description);
-        DatePicker datePicker = (DatePicker) findViewById(R.id.create_fonctionality_date_picker);
-        java.util.Date dateUtil = new Date(datePicker.getYear() - 1900, datePicker.getMonth(), datePicker.getDayOfMonth());
-        Date dateSql = new Date(dateUtil.getTime());
-        new WebAccess(new Fonctionnality(name.getText().toString(), description.getText().toString(), dateSql)).execute();
+        new WebAccess(new Fonctionnality(name.getText().toString(), description.getText().toString(), dateDeadline)).execute();
     }
 
     private void callFail(){
