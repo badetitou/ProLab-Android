@@ -150,6 +150,9 @@ public class LogIn extends ActionBarActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            if (result == "fail"){
+                callFail(result);
+            }
             progressBar.setIndeterminate(false);
             try {
                 JSONObject user = new JSONObject(result);
@@ -246,6 +249,10 @@ public class LogIn extends ActionBarActivity {
             // 11. return result
             return result;
         }
+    }
+
+    private void callFail(String result) {
+        Toast.makeText(this, result,Toast.LENGTH_SHORT).show();
     }
 
 }

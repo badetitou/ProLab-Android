@@ -50,5 +50,6 @@
     <string name="update_failed">Update Failed. Check your internet connection.</string>
     <string name="update_ok">Success</string>
     <string name="action_update">Update</string>
+    <string name="popup_remove_project">Delete Project</string>
 
 </resources>

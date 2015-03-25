@@ -47,6 +47,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
     @Override
     public void onResume(){
         super.onResume();
+        ((MemberAdapter)listMemberAdapter).setContext(this.getActivity(), this.getFragmentManager());
         new WebAccessProjectUser(main.idProject).execute();
     }
 
@@ -74,7 +75,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
         listMemberLayoutManager = new LinearLayoutManager(getActivity());
         listMember.setLayoutManager(listMemberLayoutManager);
 
-        listMemberAdapter = new MemberAdapter(new String[0], new int[0]);
+        listMemberAdapter = new MemberAdapter(new String[0],new int[0],getActivity(), new int[0], this.getFragmentManager());
         listMember.setAdapter(listMemberAdapter);
 
         new WebAccessProjectUser(main.idProject).execute();
@@ -129,7 +130,7 @@ public class SelectMember extends Fragment implements View.OnClickListener {
                     members.add(jsonArray.getJSONObject(i).getString("username"));
                     idMember.add(jsonArray.getJSONObject(i).getInt("idMember"));
                 }
-                ((MemberAdapter) listMemberAdapter).setData(members, idMember);
+                ((MemberAdapter) listMemberAdapter).setData(members, idMember, 0);
             } catch (Exception e){
                 callFail(result);
             }

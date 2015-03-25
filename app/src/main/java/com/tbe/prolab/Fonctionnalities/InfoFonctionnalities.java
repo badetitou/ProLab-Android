@@ -1,6 +1,5 @@
 package com.tbe.prolab.Fonctionnalities;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -17,9 +16,7 @@ import android.widget.Toast;
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.Members.MemberAdapter;
 import com.tbe.prolab.PopUp.AddUser;
-import com.tbe.prolab.Project.ProjectAdapter;
 import com.tbe.prolab.R;
-import com.tbe.prolab.RecyclerItemClickListener;
 import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
 
@@ -32,7 +29,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class InfoFonctionnalities extends ActionBarActivity {
 
@@ -65,7 +61,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
         listMembersLayoutManager = new LinearLayoutManager(this);
         listmembers.setLayoutManager(listMembersLayoutManager);
 
-        listMembersAdapter = new MemberAdapter(new String[0], new int[0]);
+        listMembersAdapter = new MemberAdapter(new String[0], new int[0], getApplicationContext(), new int[0], this.getSupportFragmentManager());
         listmembers.setAdapter(listMembersAdapter);
 
         Bundle bundle = this.getIntent().getExtras();
@@ -123,7 +119,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
                     members.add(jsonArray.getJSONObject(i).getString("username"));
                     idMember.add(jsonArray.getJSONObject(i).getInt("idMember"));
                 }
-                ((MemberAdapter) listMembersAdapter).setData(members, idMember);
+                ((MemberAdapter) listMembersAdapter).setData(members, idMember, idFonctionnality);
             } catch (Exception e){
                 callFail(result);
             }
@@ -133,8 +129,6 @@ public class InfoFonctionnalities extends ActionBarActivity {
             InputStream is = null;
             // Only display the first 500 characters of the retrieved
             // web page content.
-            int len = 500;
-
             try {
                 URL url = new URL(main.HOST + "/v1/fonctionnalities/member/" + idFonctionnality);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

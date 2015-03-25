@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.internal.pu;
+import com.tbe.prolab.PopUp.RemoveProject;
 import com.tbe.prolab.R;
 import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
@@ -23,8 +22,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -72,6 +69,8 @@ public class InfoProject extends Fragment implements View.OnClickListener {
         new WebAccessInfoProject(main.idProject).execute();
         ImageButton imageButton = (ImageButton) v.findViewById(R.id.info_project_modif_button);
         imageButton.setOnClickListener(this);
+        ImageButton delete = (ImageButton) v.findViewById(R.id.info_project_delete);
+        delete.setOnClickListener(this);
         return v;
     }
 
@@ -88,6 +87,9 @@ public class InfoProject extends Fragment implements View.OnClickListener {
                 bundle.putInt("projectNumber", projectNumber);
                 intent.putExtras(bundle);
                 startActivity(intent);
+            case R.id.info_project_delete:
+                new RemoveProject(getActivity()).show(this.getFragmentManager(), "removeProject");
+
         }
     }
 
