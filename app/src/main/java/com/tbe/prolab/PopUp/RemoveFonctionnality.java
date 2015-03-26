@@ -4,6 +4,7 @@ package com.tbe.prolab.PopUp;
  * Created by badetitou on 25/03/15.
  */
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -96,6 +97,7 @@ public class RemoveFonctionnality extends DialogFragment {
 
     private void callResult(String result) {
         Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+        ((Activity) context).finish();
     }
 }
 

@@ -25,9 +25,9 @@
     <string name="pop_up_accept">Accepter</string>
     <string name="pop_up_cancel">Annuler</string>
     <string name="popup_add_user">Ajouter utilisateur</string>
-    <string name="popup_add_username">Nom d'utilisateur</string>
+    <string name="popup_add_username">Nom d\'utilisateur</string>
     <string name="popup_remove_project">Supprimer le projet</string>
-    <string name="popup_remove_user">Suppression de l'utilisateur</string>
+    <string name="popup_remove_user">Suppression de l\'utilisateur</string>
     <string name="prompt_create_fonctionnalities_name">Nom</string>
     <string name="prompte_create_fonctionnality_description">Description</string>
     <string name="title_activity_create_fonctionnality">Création de fonctionnalitées</string>

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.tbe.prolab.DividerItemDecoration;
 import com.tbe.prolab.Members.MemberAdapter;
 import com.tbe.prolab.PopUp.AddUser;
+import com.tbe.prolab.PopUp.RemoveFonctionnality;
 import com.tbe.prolab.R;
 import com.tbe.prolab.Tools.ReadIt;
 import com.tbe.prolab.main;
@@ -88,7 +89,7 @@ public class InfoFonctionnalities extends ActionBarActivity {
     }
 
     public void deleteFonctionnality(View view){
-
+        new RemoveFonctionnality(view.getContext(), name.getText().toString(), idFonctionnality).show(getSupportFragmentManager(), "removeFonctionnality");
     }
 
 
@@ -205,11 +206,6 @@ public class InfoFonctionnalities extends ActionBarActivity {
         }
 
         public String getInfoFonctionnality() throws IOException {
-            InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
-            int len = 500;
-
             try {
                 URL url = new URL(main.HOST + "/v1/fonctionnalities/" + idFonctionnality);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -224,15 +220,10 @@ public class InfoFonctionnalities extends ActionBarActivity {
                     return "fail";
                 }
 
-                is = conn.getInputStream();
-                // Convert the InputStream into a string
-                return ReadIt.ReadIt(is);
+                return ReadIt.ReadIt(conn.getInputStream());
                 // Makes sure that the InputStream is closed after the app is
                 // finished using it.
             } finally {
-                if (is != null) {
-                    is.close();
-                }
             }
         }
     }

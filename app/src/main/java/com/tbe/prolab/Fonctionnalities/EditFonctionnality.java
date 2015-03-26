@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Date;
@@ -45,7 +46,7 @@ public class EditFonctionnality extends ActionBarActivity {
     private Date dateDeadline;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_fonctionnality);
         name = (EditText) findViewById(R.id.edit_fonctionnality_name);
@@ -61,8 +62,17 @@ public class EditFonctionnality extends ActionBarActivity {
         avancement.setProgress(bundle.getInt("progress"));
         id = bundle.getInt("id");
 
-        // DATE PICKER
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        java.util.Date dateUtil = null;
+        try {
+            dateUtil = dateFormat.parse(bundle.getString("date"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dateDeadline = new Date(dateUtil.getTime());
+
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        // DATE PICKER
         Calendar newCalendar = Calendar.getInstance();
         datePickerDialog = new DatePickerDialog(EditFonctionnality.this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
